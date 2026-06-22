@@ -1,0 +1,378 @@
+.pageWrapper {
+  background-color: #F8FAFC;
+  min-height: 100vh;
+  font-family: inherit;
+  padding-bottom: 60px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* HERO SECTION */
+.heroSection {
+  background-color: #2F4253;
+  border-radius: 16px;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.heroTitle {
+  font-size: 32px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0 0 12px 0;
+}
+
+.heroSubtitle {
+  font-size: 16px;
+  color: #94A3B8;
+  margin: 0 0 32px 0;
+}
+
+.searchContainer {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 6px;
+  margin-bottom: 24px;
+}
+
+.searchInput {
+  flex-grow: 1;
+  border: none;
+  background: transparent;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #1E293B;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #94A3B8;
+}
+
+.searchBtn {
+  background-color: #F5A623;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.searchBtn:hover {
+  background-color: #E59613;
+}
+
+.quickTags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #CBD5E1;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tag:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+/* MAIN CONTENT */
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.sectionBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 20px 0;
+}
+
+/* CATEGORY GRID */
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.categoryCard {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  border: 1px solid #F1F5F9;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.categoryCard:hover {
+  border-color: #E2E8F0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.categoryName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 8px 0;
+}
+
+.categoryCount {
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
+}
+
+/* BOTTOM GRID */
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+/* FAQ SECTION */
+.faqSection {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid #F1F5F9;
+  overflow: hidden;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+}
+
+.faqMainTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  padding: 24px;
+  margin: 0;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.faqItem {
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.faqItem:last-child {
+  border-bottom: none;
+}
+
+.faqHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  cursor: pointer;
+  background-color: #FFFFFF;
+  transition: background-color 0.2s;
+}
+
+.faqHeader:hover {
+  background-color: #F8FAFC;
+}
+
+.faqQuestion {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0;
+  flex-grow: 1;
+  padding-right: 16px;
+}
+
+.faqIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faqAnswer {
+  padding: 0 24px 24px 24px;
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.6;
+}
+
+/* CONTACT SECTION */
+.contactSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contactCard {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #F1F5F9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 8px 0;
+}
+
+.contactDetail {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0 0 4px 0;
+}
+
+.contactSub {
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
+}
+
+.callBtn {
+  padding: 8px 20px;
+  background-color: #FFFFFF;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.callBtn:hover {
+  background-color: #F8FAFC;
+}
+
+.emailBtn {
+  padding: 8px 20px;
+  background-color: #F5A623;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.emailBtn:hover {
+  background-color: #E59613;
+}
+
+/* GUIDES CARD */
+.guidesCard {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #F1F5F9;
+  margin-top: 8px;
+}
+
+.guidesTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 16px 0;
+}
+
+.guidesList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guideItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #F8FAFC;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.guideItem:hover {
+  background-color: #F1F5F9;
+}
+
+.guideText {
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.guideIcon {
+  color: #94A3B8;
+}
+
+@media (max-width: 900px) {
+  .categoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .bottomGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .categoryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .heroSection {
+    padding: 40px 20px;
+  }
+  .searchContainer {
+    flex-direction: column;
+    padding: 12px;
+    background-color: transparent;
+  }
+  .searchInput {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  .searchBtn {
+    padding: 12px;
+  }
+}

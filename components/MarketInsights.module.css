@@ -1,0 +1,140 @@
+.sectionWrapper {
+  width: 100%;
+  padding: 0 10% 24px 10%;
+  font-family: inherit;
+  background-color: transparent;
+}
+
+.innerContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  color: #6B7280;
+  font-size: 13px;
+  margin: 0;
+}
+
+.exploreAll {
+  color: #F59E0B;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.exploreAll:hover {
+  text-decoration: underline;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  height: 100%;
+  min-height: 180px;
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.category {
+  color: #F59E0B;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.description {
+  color: #6B7280;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.footerWrapper {
+  margin-top: auto;
+  border-top: 1px solid #F3F4F6;
+  padding-top: 24px;
+}
+
+.trendRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.trendGreen {
+  color: #10B981;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+@media (max-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .sectionWrapper {
+    padding: 40px 5%;
+  }
+  .gridContainer {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .card {
+    height: auto;
+    min-height: 280px;
+  }
+}

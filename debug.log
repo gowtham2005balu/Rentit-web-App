@@ -1,0 +1,284 @@
+{
+  "userId": "3",
+  "rows": [
+    {
+      "id": 45,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 95% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T09:33:22.799Z"
+    },
+    {
+      "id": 44,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 95% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T09:33:07.525Z"
+    },
+    {
+      "id": 43,
+      "userId": 3,
+      "title": "Visit Rescheduled",
+      "message": "Your visit for 3 BHK Apartment has been rescheduled to Sat, 20 Jun 2026 at 11:00 AM.",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-16T09:31:42.173Z"
+    },
+    {
+      "id": 42,
+      "userId": 3,
+      "title": "Visit Rescheduled",
+      "message": "Your visit for 2 BHK Apartment has been rescheduled to Sat, 20 Jun 2026 at 6:00 PM.",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-16T08:49:36.326Z"
+    },
+    {
+      "id": 41,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 65% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T06:56:53.810Z"
+    },
+    {
+      "id": 40,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 65% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T06:09:16.926Z"
+    },
+    {
+      "id": 39,
+      "userId": 3,
+      "title": "Visit Rescheduled",
+      "message": "Your visit for 2 BHK Apartment has been rescheduled to Sat, 20 Jun 2026 at 11:00 AM.",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-16T06:08:19.162Z"
+    },
+    {
+      "id": 38,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 15% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T06:03:33.088Z"
+    },
+    {
+      "id": 37,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 15% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T06:03:31.010Z"
+    },
+    {
+      "id": 36,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 15% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T06:03:29.857Z"
+    },
+    {
+      "id": 35,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"Shared Room in vfdsc\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-16T05:23:12.391Z"
+    },
+    {
+      "id": 34,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"Shared Room in vfdsc\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-16T05:23:12.376Z"
+    },
+    {
+      "id": 33,
+      "userId": 3,
+      "title": "Listing Approved 🎉",
+      "message": "Congratulations! Your listing for \"tyjeytj\" has been successfully published. It is now live and visible to thousands of potential tenants and buyers on RentIt. You can edit your listing details, upload more photos, or manage incoming inquiries directly from your dashboard.",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-16T05:22:59.018Z"
+    },
+    {
+      "id": 32,
+      "userId": 3,
+      "title": "Listing Approved 🎉",
+      "message": "Congratulations! Your listing for \"Shared Room in vfdsc\" has been successfully published. It is now live and visible to thousands of potential tenants and buyers on RentIt. You can edit your listing details, upload more photos, or manage incoming inquiries directly from your dashboard.",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-15T18:46:36.106Z"
+    },
+    {
+      "id": 31,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"3 BHK Apartment\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-15T18:33:43.195Z"
+    },
+    {
+      "id": 30,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"3 BHK Apartment\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-15T18:33:43.192Z"
+    },
+    {
+      "id": 23,
+      "userId": 3,
+      "title": "Visit Rescheduled",
+      "message": "Your visit for 3 BHK Independent House has been rescheduled to Fri, 10 Apr 2026 at 11:00 AM.",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-15T17:05:07.128Z"
+    },
+    {
+      "id": 22,
+      "userId": 3,
+      "title": "Payment Successful",
+      "message": "Basic Plan payment of ₹2,713 was processed successfully. Invoice #INV-4092",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-15T16:41:56.346Z"
+    },
+    {
+      "id": 20,
+      "userId": 3,
+      "title": "Payment Successful",
+      "message": "Premium+ Plan payment of ₹6,311 was processed successfully. Invoice #INV-2909",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-15T10:24:56.945Z"
+    },
+    {
+      "id": 16,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 50% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-15T05:55:46.808Z"
+    },
+    {
+      "id": 15,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 50% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-15T05:55:45.610Z"
+    },
+    {
+      "id": 14,
+      "userId": 3,
+      "title": "Listing Approved 🎉",
+      "message": "Congratulations! Your listing for \"WETW\" has been successfully published. It is now live and visible to thousands of potential tenants and buyers on RentIt. You can edit your listing details, upload more photos, or manage incoming inquiries directly from your dashboard.",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:28:47.878Z"
+    },
+    {
+      "id": 13,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 65% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:28:35.786Z"
+    },
+    {
+      "id": 12,
+      "userId": 3,
+      "title": "Draft Saved 📝",
+      "message": "Your property post is 57% complete. Click \"Resume Posting\" to finish your listing and make it live on RentIt!",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:27:09.796Z"
+    },
+    {
+      "id": 9,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"rrgtbhrth\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:18:35.351Z"
+    },
+    {
+      "id": 8,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"rrgtbhrth\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:18:35.340Z"
+    },
+    {
+      "id": 6,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"3 BHK Villa\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:13:25.270Z"
+    },
+    {
+      "id": 5,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"3 BHK Independent House\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:13:24.237Z"
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "title": "Property Saved 💖",
+      "message": "You saved \"3 BHK Independent House\" to your wishlist. It looks like a great match! Don't forget to schedule a visit or contact the owner before it's gone!",
+      "type": "Premium",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:13:24.226Z"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "title": "Listing Approved 🎉",
+      "message": "Congratulations! Your listing for \"EAWRGQWEGQW\" has been successfully published. It is now live and visible to thousands of potential tenants and buyers on RentIt. You can edit your listing details, upload more photos, or manage incoming inquiries directly from your dashboard.",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:09:26.408Z"
+    },
+    {
+      "id": 2,
+      "userId": 3,
+      "title": "Listing Approved",
+      "message": "Your property \"Untitled\" has been uploaded and is now live on RentIt.",
+      "type": "Listings",
+      "isRead": false,
+      "createdAt": "2026-06-10T18:07:48.195Z"
+    }
+  ]
+}

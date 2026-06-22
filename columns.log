@@ -1,0 +1,26 @@
+{
+  "error": "column \"userId\" does not exist",
+  "columns": [
+    {
+      "column_name": "id"
+    },
+    {
+      "column_name": "recipientId"
+    },
+    {
+      "column_name": "title"
+    },
+    {
+      "column_name": "body"
+    },
+    {
+      "column_name": "category"
+    },
+    {
+      "column_name": "isRead"
+    },
+    {
+      "column_name": "createdAt"
+    }
+  ]
+}

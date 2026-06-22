@@ -1,0 +1,286 @@
+.cardLink {
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  margin-bottom: 24px;
+}
+
+.cardLink:last-child {
+  margin-bottom: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.imageContainer {
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageActions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.actionIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6B7280;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.actionIcon:hover {
+  color: #EF4444;
+}
+
+.imageOverlayBottom {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.photoCount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.timePosted {
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.contentContainer {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.locationInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.iconMuted {
+  color: #9CA3AF;
+}
+
+.metroPill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #EFF6FF;
+  color: #2563EB;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.period {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.financialBlock {
+  display: flex;
+  background-color: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.financialItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+}
+
+.financialLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.financialValue {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.financialDivider {
+  width: 1px;
+  background-color: #E5E7EB;
+}
+
+.detailsRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #4B5563;
+  font-weight: 500;
+}
+
+.dot {
+  color: #D1D5DB;
+}
+
+.amenitiesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.amenityPill {
+  padding: 4px 10px;
+  background-color: #F3F4F6;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #374151;
+  border: 1px solid #E5E7EB;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.btnSecondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #374151;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btnSecondary:hover {
+  background-color: #F3F4F6;
+}
+
+.btnPrimary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  background-color: #374151;
+  border: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btnPrimary:hover {
+  background-color: #1F2937;
+}

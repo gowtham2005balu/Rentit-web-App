@@ -1,0 +1,193 @@
+.sidebar {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid var(--border-color);
+  width: 300px;
+  flex-shrink: 0;
+  height: fit-content;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  position: sticky;
+  top: 24px;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #CBD5E1;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #94A3B8;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #324458;
+}
+
+.resetBtn {
+  color: #324458;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.resetBtn:hover {
+  background-color: #F3F4F6;
+}
+
+.filterSection {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.filterSection:last-child {
+  border-bottom: none;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 800;
+  color: #324458;
+}
+
+.chevron {
+  color: #9CA3AF;
+}
+
+.rangeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rangeTrack {
+  position: relative;
+  height: 4px;
+  background-color: #324458;
+  border-radius: 2px;
+  margin: 0 8px;
+}
+
+.rangeFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #324458;
+  border-radius: 2px;
+}
+
+.rangeHandleLeft, .rangeHandleRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-color: #324458;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.rangeHandleLeft {
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.rangeHandleRight {
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.rangeLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: #94A3B8;
+}
+
+.pillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pillBtn {
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  background-color: #F1F5F9;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pillBtn:hover {
+  background-color: #E2E8F0;
+}
+
+.pillBtnActive {
+  background-color: #324458 !important;
+  color: #fff !important;
+}
+
+.bottomAction {
+  padding: 16px 20px;
+  background-color: #fff;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 12px 12px;
+}
+
+.applyBtn {
+  width: 100%;
+  padding: 14px;
+  background-color: #324458;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: background-color 0.2s;
+}
+
+.applyBtn:hover {
+  background-color: #1E293B;
+}

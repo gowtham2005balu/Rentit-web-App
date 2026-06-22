@@ -1,0 +1,218 @@
+.pageWrapper {
+  background-color: #F8FAFC;
+  min-height: 100vh;
+  font-family: inherit;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.pageHeader {
+  margin-bottom: 32px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0 0 8px 0;
+}
+
+.pageSubtitle {
+  font-size: 14px;
+  color: #64748B;
+  margin: 0;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* CARDS */
+.card {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid #F1F5F9;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 24px 0;
+}
+
+.cardHeaderWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.cardIcon {
+  color: #3B82F6;
+}
+
+/* TOGGLES */
+.settingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settingText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settingName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0;
+}
+
+.settingDesc {
+  font-size: 13px;
+  color: #94A3B8;
+  margin: 0;
+}
+
+.divider {
+  height: 1px;
+  background-color: #F1F5F9;
+  margin: 24px 0;
+}
+
+.toggle {
+  width: 44px;
+  height: 24px;
+  background-color: #CBD5E1;
+  border-radius: 24px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.toggleOn {
+  background-color: #2F4253;
+}
+
+.toggleKnob {
+  width: 20px;
+  height: 20px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.toggleOn .toggleKnob {
+  transform: translateX(20px);
+}
+
+/* RIGHT COLUMN INPUTS */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.selectInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1E293B;
+  background-color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+}
+
+.selectInput:focus {
+  border-color: #3B82F6;
+}
+
+/* DANGER ZONE */
+.dangerCard {
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+}
+
+.dangerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #EF4444;
+  margin: 0;
+}
+
+.dangerIcon {
+  color: #EF4444;
+}
+
+.dangerText {
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.deleteBtn {
+  padding: 10px 20px;
+  background-color: #FEE2E2;
+  color: #EF4444;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.deleteBtn:hover {
+  background-color: #FECACA;
+}
+
+@media (max-width: 768px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+}

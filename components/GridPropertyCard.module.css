@@ -1,0 +1,217 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 160px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badgeNew, .badgeMetro {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+
+.badgeNew {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.badgeMetro {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.heartIcon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.heartIcon:hover {
+  color: #EF4444;
+}
+
+.timeBadge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.photoCount, .matchBadge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.matchBadge {
+  color: #FBBF24;
+}
+
+.content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.subtitle {
+  font-size: 9px;
+  font-weight: 700;
+  color: #6B7280;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #6B7280;
+  margin-bottom: 8px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #4B5563;
+  margin-bottom: 12px;
+}
+
+.dot {
+  color: #D1D5DB;
+}
+
+.amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.amenityBadge {
+  background-color: #fff;
+  border: 1px solid #E5E7EB;
+  color: #4B5563;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  border-top: 1px solid #E5E7EB;
+  padding-top: 12px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.priceLabel {
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.detailsBtn {
+  padding: 6px 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #374151;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.detailsBtn:hover {
+  background-color: #F3F4F6;
+}
+
+.contactBtn {
+  padding: 6px 14px;
+  background-color: #374151;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contactBtn:hover {
+  background-color: #1F2937;
+}
