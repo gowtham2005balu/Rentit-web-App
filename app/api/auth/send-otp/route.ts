@@ -52,20 +52,50 @@ export async function POST(req: Request) {
       } 
       
       if (!smsSent && process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_API_KEY !== "") {
-        if (process.env.FAST2SMS_OTP_ID) {
-          const smsResponse = await fetch('https://www.fast2sms.com/dev/otp/send', {
-            method: 'POST',
-            headers: {
-              'authorization': process.env.FAST2SMS_API_KEY as string,
-              'Content-Type': 'application/json',
-              'accept': 'application/json'
-            },
-            body: JSON.stringify({ mobile, otp_id: process.env.FAST2SMS_OTP_ID })
-          });
-          const smsData = await smsResponse.json();
-          console.log(`[Real SMS] Fast2SMS Response:`, smsData);
-          if (smsData.request_id) smsSent = true;
-        }
+        const bodyParams = new URLSearchParams({
+          variables_values: otp,
+          route: 'otp',
+          numbers: mobile
+        });
+        const smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+          method: 'POST',
+          headers: {
+            'authorization': process.env.FAST2SMS_API_KEY as string,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: bodyParams.toString()
+        });
+        const smsData = await smsResponse.json();
+        console.log(`[Real SMS] Fast2SMS Response:`, smsData);
+        if (smsData.return === true) smsSent = true;
+      }
+
+      if (!smsSent && process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
+        const twilioSid = process.env.TWILIO_ACCOUNT_SID;
+        const twilioAuth = process.env.TWILIO_AUTH_TOKEN;
+        const twilioPhone = process.env.TWILIO_PHONE_NUMBER;
+        
+        const formattedMobile = mobile.startsWith('+') ? mobile : `+91${mobile}`;
+
+        const basicAuth = Buffer.from(`${twilioSid}:${twilioAuth}`).toString('base64');
+        const bodyParams = new URLSearchParams({
+          To: formattedMobile,
+          From: twilioPhone,
+          Body: `Your Rentit verification OTP is ${otp}.`
+        });
+        
+        const smsResponse = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${basicAuth}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: bodyParams.toString()
+        });
+        
+        const smsData = await smsResponse.json();
+        console.log(`[Real SMS] Twilio Response:`, smsData);
+        if (smsData.sid) smsSent = true;
       }
       
       if (!smsSent) {

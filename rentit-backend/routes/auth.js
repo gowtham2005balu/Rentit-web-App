@@ -22,29 +22,55 @@ router.post('/send-otp', async (req, res) => {
             await pool.query('UPDATE "User" SET otp = $1 WHERE mobile = $2', [otp, mobile]);
         }
         
-        // Attempt to send real SMS if API key is provided
-        if (process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_API_KEY !== "") {
-            const url = 'https://www.fast2sms.com/dev/bulkV2';
-            const bodyParams = new URLSearchParams({
-                variables_values: otp,
-                route: 'otp',
-                numbers: mobile
-            });
+        const fetch = global.fetch || require('node-fetch');
+        let smsSent = false;
 
-            // Need to use dynamic import for node-fetch if using commonjs, or use global fetch if Node >= 18
-            const fetch = global.fetch || require('node-fetch');
-            const smsResponse = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'authorization': process.env.FAST2SMS_API_KEY,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: bodyParams.toString()
-            });
-            
-            const smsData = await smsResponse.json();
-            console.log(`[Real SMS] Fast2SMS Response for ${mobile}:`, smsData);
-        } else {
+        // Try 2Factor.in first
+        if (process.env.API_KEY && process.env.API_KEY !== "") {
+            try {
+                const url = `https://2factor.in/API/V1/${process.env.API_KEY}/SMS/${mobile}/${otp}`;
+                const response = await fetch(url, { method: 'GET' });
+                const text = await response.text();
+                try {
+                    const data = JSON.parse(text);
+                    console.log(`[Real SMS] 2Factor Response:`, data);
+                    if (data.Status !== 'Error') smsSent = true;
+                } catch (e) {
+                    console.log(`[Real SMS] 2Factor Non-JSON:`, text);
+                }
+            } catch (e) {
+                console.log(`[Real SMS] 2Factor Error:`, e.message);
+            }
+        }
+
+        // Fallback to Fast2SMS
+        if (!smsSent && process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_API_KEY !== "") {
+            try {
+                const url = 'https://www.fast2sms.com/dev/bulkV2';
+                const bodyParams = new URLSearchParams({
+                    variables_values: otp,
+                    route: 'otp',
+                    numbers: mobile
+                });
+
+                const smsResponse = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'authorization': process.env.FAST2SMS_API_KEY,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: bodyParams.toString()
+                });
+                
+                const smsData = await smsResponse.json();
+                console.log(`[Real SMS] Fast2SMS Response for ${mobile}:`, smsData);
+                if (smsData.return === true) smsSent = true;
+            } catch (e) {
+                console.log(`[Real SMS] Fast2SMS Error:`, e.message);
+            }
+        }
+        
+        if (!smsSent) {
             console.log('---------------------------------');
             console.log(`[Mock SMS] OTP for ${mobile} is: ${otp}`);
             console.log('---------------------------------');
