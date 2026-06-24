@@ -7,7 +7,7 @@ declare global {
 
 function createPool(): Pool {
   const newPool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL || "postgresql://neondb_owner:npg_bBU7wE1yjQkS@ep-square-truth-apbcxbyk-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&uselibpqcompat=true",
     ssl: { rejectUnauthorized: false },
     max: 20, // Increased to support concurrent queries
     idleTimeoutMillis: 60000,
