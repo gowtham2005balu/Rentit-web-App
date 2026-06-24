@@ -186,7 +186,7 @@ export default function AddFlatmatePage() {
         title: `${roomType} in ${apartmentName || bhkType}`,
         price: monthlyRent,
         type: 'Flatmate',
-        userId: localStorage.getItem('rentit_userId')
+        userId: localStorage.getItem('rentit_userId') || sessionStorage.getItem('rentit_userId')
       };
 
       const res = await fetch('/api/properties/create', {
@@ -194,17 +194,17 @@ export default function AddFlatmatePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `HTTP error! status: ${res.status}`);
       if (data.success) {
         setCurrentStep(8);
       } else {
         console.warn("Submission issue:", data);
-        setCurrentStep(8);
+        alert(data.error || data.message || "Failed to submit property. Please ensure you are logged in.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.warn("Submission error:", error);
-      setCurrentStep(8);
+      alert(error.message || "Failed to submit property. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }

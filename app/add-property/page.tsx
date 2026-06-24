@@ -272,7 +272,7 @@ function AddPropertyContent() {
         title: apartmentName || `${bhkType} for ${listingPurpose}`,
         price: monthlyRent,
         type: propertyCategory,
-        userId: localStorage.getItem('rentit_userId')
+        userId: localStorage.getItem('rentit_userId') || sessionStorage.getItem('rentit_userId')
       };
 
       let res;
@@ -294,27 +294,27 @@ function AddPropertyContent() {
         });
       }
       
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+        throw new Error(data.error || `HTTP error! status: ${res.status}`);
       }
-      const data = await res.json();
       if (data.success || data.record) {
         localStorage.removeItem('rentit_property_draft');
         setCurrentStep(8);
       } else {
         console.warn("Failed to submit property:", data);
-        setCurrentStep(8); // fallback
+        alert(data.error || data.message || "Failed to submit property. Please ensure you are logged in.");
       }
-    } catch (e) {
+    } catch (e: any) {
       console.warn("Error submitting property:", e);
-      setCurrentStep(8); // fallback
+      alert(e.message || "Failed to submit property. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleSaveDraft = async () => {
-    const userIdStr = localStorage.getItem('rentit_userId');
+    const userIdStr = localStorage.getItem('rentit_userId') || sessionStorage.getItem('rentit_userId');
     if (!userIdStr) {
       alert("Please login to save drafts.");
       return;

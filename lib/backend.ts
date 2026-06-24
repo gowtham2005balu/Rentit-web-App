@@ -81,50 +81,36 @@ export async function fetchAllProperties() {
     const aptRows = await safeQuery('SELECT id, city, locality, street, "buildingType" as "apartmentType", "bhkType", "expectedRent" as price, images, "createdAt" as created_at FROM "Apartment" ORDER BY "createdAt" DESC LIMIT 20');
     const comRows = await safeQuery('SELECT id, city, locality, street, "propertyType", "buildingType", "expectedRent" as price, images, "createdAt" as created_at FROM "Commercial" ORDER BY "createdAt" DESC LIMIT 20');
     const flatRows = await safeQuery('SELECT id, city, locality, street, "apartmentType", "apartmentName", "bhkType", "roomType", "expectedRent" as price, images, "createdAt" as created_at FROM "Flatmate" ORDER BY "createdAt" DESC LIMIT 20');
-    const pgRows = await safeQuery('SELECT id, city, locality, street, "propertyName", "propertyType", "roomType", images, "createdAt" as created_at FROM "Property" ORDER BY "createdAt" DESC LIMIT 20');
+    const pgRows = await safeQuery('SELECT id, city, locality, street, "propertyName", "propertyType", "roomType", rent as price, images, "createdAt" as created_at FROM "Property" ORDER BY "createdAt" DESC LIMIT 20');
     const oldRows = await safeQuery('SELECT * FROM properties ORDER BY created_at DESC LIMIT 20');
 
     let all: any[] = [];
 
+    // Other tables likely don't exist in the new schema, but keep for safety
     if (aptRows) {
       all.push(...aptRows.map((r: any) => ({
-        ...r,
-        id: r.id,
-        _id: r.id,
-        _key: `apt-${r.id}`,
+        ...r, id: r.id, _id: r.id, _key: `apt-${r.id}`,
         title: `${r.bhkType || ''} ${r.apartmentType || 'Apartment'}`,
         location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price,
-        type: 'Residential',
-        propertyType: 'Residential',
+        price: r.price, type: 'Residential', propertyType: 'Residential',
         image_url: getFirstImage(r.images)
       })));
     }
     if (comRows) {
       all.push(...comRows.map((r: any) => ({
-        ...r,
-        id: r.id,
-        _id: r.id,
-        _key: `com-${r.id}`,
+        ...r, id: r.id, _id: r.id, _key: `com-${r.id}`,
         title: `${r.buildingType || r.propertyType || 'Commercial Space'}`,
         location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price,
-        type: 'Commercial',
-        propertyType: 'Commercial',
+        price: r.price, type: 'Commercial', propertyType: 'Commercial',
         image_url: getFirstImage(r.images)
       })));
     }
     if (flatRows) {
       all.push(...flatRows.map((r: any) => ({
-        ...r,
-        id: r.id,
-        _id: r.id,
-        _key: `flat-${r.id}`,
+        ...r, id: r.id, _id: r.id, _key: `flat-${r.id}`,
         title: `${r.roomType || r.bhkType || ''} in ${r.apartmentName || 'Apartment'}`,
         location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price,
-        type: 'Flatmate',
-        propertyType: 'Flatmate',
+        price: r.price, type: 'Flatmate', propertyType: 'Flatmate',
         image_url: getFirstImage(r.images)
       })));
     }
@@ -133,12 +119,12 @@ export async function fetchAllProperties() {
         ...r,
         id: r.id,
         _id: r.id,
-        _key: `pg-${r.id}`,
-        title: `${r.propertyName || 'PG Hostel'}`,
+        _key: `prop-${r.id}`,
+        title: `${r.propertyName || r.propertyType || 'Property'}`,
         location: `${r.locality || ''}, ${r.city || ''}`,
-        price: 0,
-        type: 'PG / Hostel',
-        propertyType: 'PG',
+        price: r.price,
+        type: r.propertyType || 'PG / Hostel',
+        propertyType: r.propertyType || 'PG',
         image_url: getFirstImage(r.images)
       })));
     }

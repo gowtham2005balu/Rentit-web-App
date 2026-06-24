@@ -22,8 +22,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const closeAuthModal = () => setIsAuthModalOpen(false);
 
   useEffect(() => {
-    // Check if user is logged in from session storage on mount
-    const storedUserId = sessionStorage.getItem('rentit_userId');
+    // Check if user is logged in from local storage on mount
+    const storedUserId = localStorage.getItem('rentit_userId');
     if (storedUserId) {
       setUserId(storedUserId);
     }
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = (id: string) => {
     setUserId(id);
-    sessionStorage.setItem('rentit_userId', id);
+    localStorage.setItem('rentit_userId', id);
   };
 
   const logout = () => {

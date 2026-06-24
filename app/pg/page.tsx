@@ -15,6 +15,8 @@ import { ChevronRight, ChevronDown, Train, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { fetchAllProperties } from '@/lib/backend';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "PG Accommodation in Chennai – RentIt",
   description: "Looking for a PG in Chennai? RentIt lists verified paying guest accommodations and hostels near IT parks, colleges, and city centers. Male, female & co-ed options.",
@@ -157,43 +159,49 @@ export default async function PgList({ searchParams }: { searchParams: Promise<{
             <div className={styles.standardSection}>
               <JioBanner />
               
-              <div style={{ marginTop: '16px' }}>
-                <h2 className={styles.sectionTitle}>Sponsored Listing</h2>
-                <SponsoredListingCard />
-              </div>
+              {filteredProperties.length > 0 && (
+                <div style={{ marginTop: '16px' }}>
+                  <h2 className={styles.sectionTitle}>Sponsored Listing</h2>
+                  <SponsoredListingCard property={filteredProperties[0]} />
+                </div>
+              )}
               
-              <div style={{ marginTop: '24px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Owner Listed Today</h2>
-                  <a href="/pg" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>View all &rarr;</a>
+              {filteredOwnerListed.length > 0 && (
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Owner Listed Today</h2>
+                    <a href="/pg" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>View all &rarr;</a>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    {filteredOwnerListed.map(property => (
+                      <GridPropertyCard key={property.id} property={property} />
+                    ))}
+                  </div>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  {filteredOwnerListed.map(property => (
-                    <GridPropertyCard key={property.id} property={property} />
-                  ))}
-                </div>
-              </div>
+              )}
               
               <PremiumBanner />
               <PackersBanner />
               
-              <div style={{ marginTop: '32px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Train size={18} color="#2563EB" />
-                    <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Near Metro Station</h2>
-                    <span style={{ backgroundColor: '#EFF6FF', color: '#2563EB', padding: '4px 10px', borderRadius: '16px', fontSize: '10px', fontWeight: 600 }}>≤ 1km</span>
-                  </div>
-                  <a href="/pg" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>View all &rarr;</a>
-                </div>
-                <div className={styles.scrollContainer}>
-                  {filteredMetroListed.map(property => (
-                    <div key={property.id} style={{ minWidth: '280px', maxWidth: '300px', flexShrink: 0 }}>
-                      <GridPropertyCard property={property} />
+              {filteredMetroListed.length > 0 && (
+                <div style={{ marginTop: '32px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Train size={18} color="#2563EB" />
+                      <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Near Metro Station</h2>
+                      <span style={{ backgroundColor: '#EFF6FF', color: '#2563EB', padding: '4px 10px', borderRadius: '16px', fontSize: '10px', fontWeight: 600 }}>≤ 1km</span>
                     </div>
-                  ))}
+                    <a href="/pg" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>View all &rarr;</a>
+                  </div>
+                  <div className={styles.scrollContainer}>
+                    {filteredMetroListed.map(property => (
+                      <div key={property.id} style={{ minWidth: '280px', maxWidth: '300px', flexShrink: 0 }}>
+                        <GridPropertyCard property={property} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div style={{ marginTop: '32px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>

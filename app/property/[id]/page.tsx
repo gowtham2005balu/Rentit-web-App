@@ -10,6 +10,8 @@ import ImageGallery from './ImageGallery';
 import { properties as mockProperties, ownerListedProperties, metroListedProperties, newProjects } from '../../../data/mockData';
 import { fetchBackend, fetchAllProperties, fetchPropertyById } from '../../../lib/backend';
 
+export const dynamic = 'force-dynamic';
+
 export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const id = resolvedParams.id;

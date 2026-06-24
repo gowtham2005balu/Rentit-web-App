@@ -6,18 +6,25 @@ declare global {
 }
 
 function createPool(): Pool {
+  // Use the verified connection string directly to ensure hot-reload picks it up
+  const connectionString = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_bBU7wE1yjQkS@ep-square-truth-apbcxbyk-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&uselibpqcompat=true";
+
   const newPool = new Pool({
+<<<<<<< HEAD
     connectionString: process.env.DATABASE_URL || "postgresql://neondb_owner:npg_bBU7wE1yjQkS@ep-square-truth-apbcxbyk-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&uselibpqcompat=true",
+=======
+    connectionString,
+>>>>>>> 75949d0 (Fix UI bugs and authentication flow in property listing forms)
     ssl: { rejectUnauthorized: false },
     max: 20, // Increased to support concurrent queries
     idleTimeoutMillis: 60000,
     connectionTimeoutMillis: 15000, // Important for Neon cold-starts
   });
-  
+
   newPool.on('error', (err) => {
     console.error('Unexpected error on idle client', err);
   });
-  
+
   return newPool;
 }
 

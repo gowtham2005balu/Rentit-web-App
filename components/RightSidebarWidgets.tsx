@@ -30,29 +30,7 @@ const RightSidebarWidgets: React.FC<RightSidebarWidgetsProps> = ({ recentItems }
     return Math.round(emi).toLocaleString('en-IN');
   };
 
-  // Safe mock items matching the exact mockup design
-  const defaultRecentItems: NonNullable<RightSidebarWidgetsProps['recentItems']> = [
-    {
-      title: "Maple Residency, Porur",
-      location: "Porur, Chennai",
-      price: 58000,
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      title: "Maple Residency, Porur",
-      location: "Porur, Chennai",
-      price: 58000,
-      image: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?auto=format&fit=crop&w=300&q=80"
-    },
-    {
-      title: "Maple Residency, Porur",
-      location: "Porur, Chennai",
-      price: 58000,
-      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=300&q=80"
-    }
-  ];
-
-  const displayItems = recentItems && recentItems.length > 0 ? recentItems.slice(0, 3) : defaultRecentItems;
+  const displayItems = recentItems && recentItems.length > 0 ? recentItems.slice(0, 3) : [];
 
   return (
     <aside className={styles.sidebar}>
@@ -102,45 +80,47 @@ const RightSidebarWidgets: React.FC<RightSidebarWidgetsProps> = ({ recentItems }
       </div>
 
       {/* 3. RECENTLY VIEWED Panel */}
-      <div className={styles.widgetCard}>
-        <div className={styles.cardHeader}>
-          <div className={styles.cardHeaderLeft}>
-            <History size={16} className={styles.iconDark} />
-            <h4 className={styles.cardTitle}>Recently Viewed</h4>
+      {displayItems.length > 0 && (
+        <div className={styles.widgetCard}>
+          <div className={styles.cardHeader}>
+            <div className={styles.cardHeaderLeft}>
+              <History size={16} className={styles.iconDark} />
+              <h4 className={styles.cardTitle}>Recently Viewed</h4>
+            </div>
+            <button className={styles.seeAllLink} onClick={() => alert('Loading recent items...')}>
+              See all <ArrowRight size={12} />
+            </button>
           </div>
-          <button className={styles.seeAllLink} onClick={() => alert('Loading recent items...')}>
-            See all <ArrowRight size={12} />
-          </button>
-        </div>
 
-        <div className={styles.recentList}>
-          {displayItems.map((item, idx) => (
-            <Link key={idx} href={item.id ? `/property/${item.id}` : '#'} className={styles.recentItem} style={{ textDecoration: 'none' }}>
-              <img 
-                src={item.image} 
-                alt={item.title} 
-                referrerPolicy="no-referrer"
-                className={styles.recentImage} 
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=300';
-                }}
-                ref={(img) => {
-                  if (img && img.complete && img.naturalWidth === 0) {
-                    img.src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=300';
-                  }
-                }}
-              />
-              <div className={styles.recentDetails}>
-                <h5 className={styles.recentTitle}>{item.title}</h5>
-                <span className={styles.recentLocation}>{item.location}</span>
-              </div>
-              <div className={styles.recentPriceContainer}>
-                <span className={styles.recentPrice}>₹{(item.price / 1000).toFixed(0)}k</span>
-              </div>
-            </Link>
-          ))}
+          <div className={styles.recentList}>
+            {displayItems.map((item, idx) => (
+              <Link key={idx} href={item.id ? `/property/${item.id}` : '#'} className={styles.recentItem} style={{ textDecoration: 'none' }}>
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  referrerPolicy="no-referrer"
+                  className={styles.recentImage} 
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=300';
+                  }}
+                  ref={(img) => {
+                    if (img && img.complete && img.naturalWidth === 0) {
+                      img.src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=300';
+                    }
+                  }}
+                />
+                <div className={styles.recentDetails}>
+                  <h5 className={styles.recentTitle}>{item.title}</h5>
+                  <span className={styles.recentLocation}>{item.location}</span>
+                </div>
+                <div className={styles.recentPriceContainer}>
+                  <span className={styles.recentPrice}>₹{(item.price / 1000).toFixed(0)}k</span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 4. Market Snapshot (New Design) */}
       <div className={styles.marketSnapshotCard}>

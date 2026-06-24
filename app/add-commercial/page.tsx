@@ -199,7 +199,7 @@ export default function AddCommercialPage() {
         title: `${buildingType || propertyType} for ${listingPurpose} in ${locality}`,
         price: rent,
         type: 'Commercial',
-        userId: localStorage.getItem('rentit_userId')
+        userId: localStorage.getItem('rentit_userId') || sessionStorage.getItem('rentit_userId')
       };
 
       const res = await fetch('/api/properties/create', {
@@ -207,17 +207,17 @@ export default function AddCommercialPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `HTTP error! status: ${res.status}`);
       if (data.success) {
         setCurrentStep(9);
       } else {
         console.warn("Failed to post property:", data);
-        setCurrentStep(9); // fallback
+        alert(data.error || data.message || "Failed to submit property. Please ensure you are logged in.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.warn("Submission error:", error);
-      setCurrentStep(9); // fallback
+      alert(error.message || "Failed to submit property. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }
@@ -734,13 +734,11 @@ export default function AddCommercialPage() {
                     <label className={styles.label}>Available From <span className={styles.required}>*</span></label>
                     <div className={styles.inputWrapper}>
                       <input 
-                        type="text" 
+                        type="date" 
                         className={styles.input} 
                         value={availableFrom}
                         onChange={(e) => setAvailableFrom(e.target.value)}
-                        placeholder="dd/mm/yyyy"
                       />
-                      <Calendar size={16} className={styles.inputIcon} style={{ right: '16px', left: 'auto', color: '#64748B' }} />
                     </div>
                   </div>
                 </div>

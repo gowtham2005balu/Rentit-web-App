@@ -14,7 +14,9 @@ interface SponsoredListingCardProps {
 }
 
 const SponsoredListingCard: React.FC<SponsoredListingCardProps> = ({ property }) => {
-  const displayProp = property ? {
+  if (!property) return null;
+
+  const displayProp = {
     imageUrl: property.imageUrl || property.image_url || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800',
     timeAgo: '2d ago',
     title: property.title || 'Premium 2BHK — Fully Furnished',
@@ -27,19 +29,6 @@ const SponsoredListingCard: React.FC<SponsoredListingCardProps> = ({ property })
     bhk: property.bhk ? `${property.bhk} BHK` : '2 BHK',
     furnishing: property.furnishing || 'Fully Furnished',
     amenities: property.amenities && property.amenities.length > 0 ? property.amenities.slice(0, 5) : ['AC', 'WiFi', 'Gym', 'Parking', 'Security']
-  } : {
-    imageUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800',
-    timeAgo: '2d ago',
-    title: 'Premium 2BHK — Fully Furnished, Adyar',
-    location: 'Adyar, Chennai',
-    metroDistance: '500m Metro',
-    price: '22,000',
-    deposit: '1,35,000',
-    maintenance: '3,000/month',
-    sqft: '1,100 sq.ft',
-    bhk: '2 BHK',
-    furnishing: 'Fully Furnished',
-    amenities: ['AC', 'WiFi', 'Gym', 'Parking', 'Security']
   };
 
   return (

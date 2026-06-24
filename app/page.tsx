@@ -16,64 +16,12 @@ import Footer from '../components/Footer';
 import { fetchAllProperties } from '../lib/backend';
 import styles from './page.module.css';
 
-const fallbackProperties = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600',
-    image_url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600',
-    title: 'Palm Infused 2BHK Apartment',
-    location: 'OMR, Perungudi',
-    price: 22000,
-    features: ['2 BHK', '960 sqft', 'Furnished'],
-    type: 'Residential',
-    propertyType: 'Residential',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 2,
-    image: '/elite_premium_apartment.png',
-    image_url: '/elite_premium_apartment.png',
-    title: 'High-Footfall Retail Space',
-    location: 'Anna Nagar, Chennai',
-    price: 150000,
-    features: ['Commercial', '1450 sqft', 'Bare Shell'],
-    type: 'Commercial',
-    propertyType: 'Commercial',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&q=80&w=600',
-    image_url: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&q=80&w=600',
-    title: 'Studio Near IT Corridor',
-    location: 'Sholinganallur, OMR',
-    price: 12900,
-    features: ['Studio', '480 sqft', 'Fully Furnished'],
-    type: 'Residential',
-    propertyType: 'Residential',
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 4,
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600',
-    image_url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600',
-    title: 'Premium 3BHK Penthouse',
-    location: 'Adyar, Chennai',
-    price: 65000,
-    features: ['3 BHK', '2100 sqft', 'Fully Furnished'],
-    type: 'Residential',
-    propertyType: 'Residential',
-    created_at: new Date().toISOString()
-  }
-];
-
 async function getProperties() {
   try {
     const rows = await fetchAllProperties();
 
     if (!Array.isArray(rows) || rows.length === 0) {
-      // Backend returned empty — use fallback data silently
-      return fallbackProperties;
+      return [];
     }
 
     return rows.map((row: any) => {
@@ -81,7 +29,7 @@ async function getProperties() {
       if (row.title === 'High-Footfall Retail Space') {
         img = '/elite_premium_apartment.png';
       }
-      
+
       return {
         ...row,
         image: img,
@@ -91,8 +39,8 @@ async function getProperties() {
       };
     });
   } catch (error) {
-    console.warn("Backend API unavailable, using fallback data.");
-    return fallbackProperties;
+    console.warn("Backend API unavailable, returning empty array.");
+    return [];
   }
 }
 
@@ -114,7 +62,7 @@ export const dynamic = 'force-dynamic';
 export default async function Home() {
   const properties = await getProperties();
   const topCommercialProps = properties
-    .filter((p: any) => 
+    .filter((p: any) =>
       p.type === 'Commercial' || p.propertyType === 'Commercial' || p.propertyType === 'Office' || p.propertyType === 'Shop'
     )
     .sort((a: any, b: any) => {

@@ -205,7 +205,7 @@ export default function AddPGPage() {
         title: pgName || `PG in ${locality}`,
         price: expectedRent,
         type: 'PG / Hostel',
-        userId: localStorage.getItem('rentit_userId')
+        userId: localStorage.getItem('rentit_userId') || sessionStorage.getItem('rentit_userId')
       };
 
       const res = await fetch('/api/properties/create', {
@@ -213,17 +213,17 @@ export default function AddPGPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `HTTP error! status: ${res.status}`);
       if (data.success) {
         setCurrentStep(8);
       } else {
         console.warn("Submission issue:", data);
-        setCurrentStep(7);
+        alert(data.error || data.message || "Failed to submit property. Please ensure you are logged in.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.warn("Submission error:", error);
-      setCurrentStep(7);
+      alert(error.message || "Failed to submit property. Please check your connection.");
     } finally {
       setIsSubmitting(false);
     }
@@ -343,7 +343,7 @@ export default function AddPGPage() {
             </div>
           )}
 
-          <div className={styles.formCard}>
+          <div className={styles.formCard} style={{ gridColumn: currentStep === 8 ? '1 / -1' : undefined }}>
             {currentStep === 1 && (
               <>
                 <h2 className={styles.formTitle}>What are you listing?</h2>
@@ -639,13 +639,11 @@ export default function AddPGPage() {
                     <label className={styles.label}>Available From <span>*</span></label>
                     <div className={styles.inputWrapper}>
                       <input 
-                        type="text" 
+                        type="date" 
                         className={styles.input} 
-                        placeholder="dd/mm/yyyy"
                         value={availableFrom}
                         onChange={(e) => setAvailableFrom(e.target.value)}
                       />
-                      <Calendar size={16} className={styles.selectIcon} />
                     </div>
                   </div>
                 </div>
