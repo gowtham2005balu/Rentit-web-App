@@ -149,7 +149,11 @@ const RecommendedCard = ({ property }: { property: any }) => {
         </div>
 
         <div className={styles.priceRow}>
-          <span className={styles.priceValue}>₹{property.price}</span>
+          <span className={styles.priceValue}>
+            ₹{!isNaN(Number(String(property.price).replace(/,/g, ''))) 
+                ? Number(String(property.price).replace(/,/g, '')).toLocaleString('en-IN') 
+                : property.price}
+          </span>
           <span className={styles.pricePeriod}>/month</span>
         </div>
 

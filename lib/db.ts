@@ -10,11 +10,7 @@ function createPool(): Pool {
   const connectionString = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_bBU7wE1yjQkS@ep-square-truth-apbcxbyk-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&uselibpqcompat=true";
 
   const newPool = new Pool({
-<<<<<<< HEAD
-    connectionString: process.env.DATABASE_URL || "postgresql://neondb_owner:npg_bBU7wE1yjQkS@ep-square-truth-apbcxbyk-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&uselibpqcompat=true",
-=======
     connectionString,
->>>>>>> 75949d0 (Fix UI bugs and authentication flow in property listing forms)
     ssl: { rejectUnauthorized: false },
     max: 20, // Increased to support concurrent queries
     idleTimeoutMillis: 60000,

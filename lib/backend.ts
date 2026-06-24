@@ -207,7 +207,12 @@ export async function updatePropertyInDb(id: string, type: string, updates: any)
     // Standardize title and location mapping to the specific table columns
     const title = updates.title;
     const location = updates.location;
-    const price = updates.price;
+    const price = (function() {
+      const val = updates.price || updates.rent || updates.expectedRent;
+      if (!val) return 0;
+      const parsed = parseFloat(String(val).replace(/,/g, '').replace(/[^0-9.]/g, ''));
+      return isNaN(parsed) ? 0 : parsed;
+    })();
     const imageUrl = updates.imageUrl;
 
     let query = '';

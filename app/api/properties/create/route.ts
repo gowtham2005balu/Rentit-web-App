@@ -20,7 +20,12 @@ export async function POST(req: Request) {
       "street": data.fullAddress || data.landmark || '',
       "propertyType": type,
       "propertyName": data.title || data.apartmentName || data.pgName || data.apartmentType || data.buildingType || `${data.bhkType || ''} ${type}`,
-      "rent": parseInt(data.price || data.monthlyRent || data.expectedRent || data.rent) || 0,
+      "rent": (function() {
+        const val = data.price || data.monthlyRent || data.expectedRent || data.rent;
+        if (!val) return 0;
+        const parsed = parseFloat(String(val).replace(/,/g, '').replace(/[^0-9.]/g, ''));
+        return isNaN(parsed) ? 0 : parsed;
+      })(),
       "deposit": parseInt(data.securityDeposit || data.deposit) || 0,
       "availableFrom": data.availableFrom || null,
       "images": data.images || [],
