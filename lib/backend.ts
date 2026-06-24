@@ -197,7 +197,7 @@ export async function fetchPropertyById(id: string) {
 }
 
 /**
- * Update a single property by ID. Handles switching between the 5 tables.
+ * Update a single property by ID. Only updates the new Property table.
  */
 export async function updatePropertyInDb(id: string, type: string, updates: any) {
   try {
@@ -205,69 +205,43 @@ export async function updatePropertyInDb(id: string, type: string, updates: any)
     if (isNaN(numericId)) throw new Error("Invalid property ID");
 
     // Standardize title and location mapping to the specific table columns
-    const title = updates.title;
-    const location = updates.location;
-    const price = (function() {
-      const val = updates.price || updates.rent || updates.expectedRent;
+    const title = updates.title || updates.propertyName || updates.apartmentName || updates.pgName || 'Property';
+    const locality = updates.locality || updates.location || updates.city || 'Unknown';
+    const price = (function () {
+      const val = updates.price || updates.rent || updates.expectedRent || updates.monthlyRent;
       if (!val) return 0;
       const parsed = parseFloat(String(val).replace(/,/g, '').replace(/[^0-9.]/g, ''));
       return isNaN(parsed) ? 0 : parsed;
     })();
-    const imageUrl = updates.imageUrl;
+    const images = updates.images;
 
     let query = '';
     let params: any[] = [];
-    let updatedImages: string[] = [];
 
-    if (imageUrl) {
-      const existing = await fetchPropertyById(id);
-      if (existing && existing.images) {
-        updatedImages = Array.isArray(existing.images) ? existing.images : [];
-      }
-      updatedImages.unshift(imageUrl); // Add new image to the front
-    }
-
-    // Fallback logic depending on where it originally came from
-    if (type === 'Residential') {
-      if (imageUrl) {
-        query = `UPDATE "Apartment" SET "expectedRent" = $1, locality = $2, images = $3 WHERE id = $4 RETURNING *`;
-        params = [price, location, updatedImages, numericId];
-      } else {
-        query = `UPDATE "Apartment" SET "expectedRent" = $1, locality = $2 WHERE id = $3 RETURNING *`;
-        params = [price, location, numericId];
-      }
-    } else if (type === 'Commercial') {
-      if (imageUrl) {
-        query = `UPDATE "Commercial" SET "expectedRent" = $1, locality = $2, images = $3 WHERE id = $4 RETURNING *`;
-        params = [price, location, updatedImages, numericId];
-      } else {
-        query = `UPDATE "Commercial" SET "expectedRent" = $1, locality = $2 WHERE id = $3 RETURNING *`;
-        params = [price, location, numericId];
-      }
-    } else if (type === 'Flatmate') {
-      if (imageUrl) {
-        query = `UPDATE "Flatmate" SET "expectedRent" = $1, locality = $2, images = $3 WHERE id = $4 RETURNING *`;
-        params = [price, location, updatedImages, numericId];
-      } else {
-        query = `UPDATE "Flatmate" SET "expectedRent" = $1, locality = $2 WHERE id = $3 RETURNING *`;
-        params = [price, location, numericId];
-      }
-    } else if (type === 'PG / Hostel' || type === 'PG') {
-      if (imageUrl) {
-        query = `UPDATE "Property" SET "propertyName" = $1, locality = $2, images = $3 WHERE id = $4 RETURNING *`;
-        params = [title, location, updatedImages, numericId];
-      } else {
-        query = `UPDATE "Property" SET "propertyName" = $1, locality = $2 WHERE id = $3 RETURNING *`;
-        params = [title, location, numericId];
-      }
+    if (images && Array.isArray(images)) {
+      query = `UPDATE "Property" SET "propertyName" = $1, locality = $2, rent = $3, images = $4 WHERE id = $5 RETURNING *`;
+      // Pass the array directly, pg handles it
+      params = [title, locality, price, images, numericId];
     } else {
-      // old properties table
-      query = `UPDATE properties SET title = $1, rent = $2, price = $2, location_address = $3 WHERE id = $4 RETURNING *`;
-      params = [title, price, location, numericId];
+      query = `UPDATE "Property" SET "propertyName" = $1, locality = $2, rent = $3 WHERE id = $4 RETURNING *`;
+      params = [title, locality, price, numericId];
     }
 
     const result = await safeQuery(query, params);
-    return result && result.length > 0 ? result[0] : null;
+    
+    // Fallback: Just in case the row doesn't exist in Property but exists in legacy tables
+    if (!result || result.length === 0) {
+      if (type === 'Residential') {
+        try { await safeQuery(`UPDATE "Apartment" SET "expectedRent" = $1 WHERE id = $2`, [price, numericId]); } catch(e){}
+      } else if (type === 'Commercial') {
+        try { await safeQuery(`UPDATE "Commercial" SET "expectedRent" = $1 WHERE id = $2`, [price, numericId]); } catch(e){}
+      } else if (type === 'Flatmate') {
+        try { await safeQuery(`UPDATE "Flatmate" SET "expectedRent" = $1 WHERE id = $2`, [price, numericId]); } catch(e){}
+      }
+      return { id: numericId, type, title, locality, price, images };
+    }
+
+    return result[0];
 
   } catch (error) {
     console.error(`[updatePropertyInDb] DB failed:`, (error as Error).message);

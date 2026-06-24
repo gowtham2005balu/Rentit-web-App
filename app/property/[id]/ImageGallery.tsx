@@ -57,7 +57,7 @@ export default function ImageGallery({ displayImages, allImages }: ImageGalleryP
       <div className={styles.imageWrapper} onClick={() => openLightbox(index)} style={{ cursor: 'pointer' }}>
         <ImageWithFallback 
           src={displayImages[index]} 
-          fallbackSrc="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800" 
+          fallbackSrc="https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image" 
           alt={`Property View ${index + 1}`} 
           className={styles.galleryImage} 
         />

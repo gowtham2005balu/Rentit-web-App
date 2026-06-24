@@ -64,11 +64,10 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
       else if (rawProp.image_url) urls = [rawProp.image_url];
       else if (rawProp.imageUrl) urls = [rawProp.imageUrl];
       
-      const defaultImg = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800";
-      if (urls.length === 0) return [defaultImg];
+      if (urls.length === 0) return [];
       
       return urls.map(url => {
-        if (typeof url !== 'string' || url.trim() === '' || url === 'null' || url === 'undefined') return defaultImg;
+        if (typeof url !== 'string' || url.trim() === '' || url === 'null' || url === 'undefined') return "EMPTY";
         return url;
       });
     })(),
@@ -559,7 +558,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               
               <div className={styles.simPropRow}>
                 {(similarPropsFiltered.length > 5 ? similarPropsFiltered.slice(0, 10) : allProperties.filter(apt => apt.id !== rawProp.id).slice(0, 10)).map((prop, idx) => {
-                  let imgUrl = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=600";
+                  let imgUrl = "https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image";
                   if (Array.isArray(prop.images) && prop.images.length > 0) imgUrl = prop.images[0];
                   else if (prop.image_url) imgUrl = prop.image_url;
                   else if (prop.imageUrl) imgUrl = prop.imageUrl;
@@ -569,7 +568,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                       <div className={styles.simPropCard}>
                         <ImageWithFallback 
                           src={imgUrl} 
-                          fallbackSrc="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=600"
+                          fallbackSrc="https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image"
                           alt={prop.title || `Property ${idx + 1}`} 
                           className={styles.simPropImg} 
                         />
@@ -631,7 +630,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
                 title: p.title,
                 location: p.location,
                 price: p.price,
-                image: p.images[0] || '/luxury_bedroom.png',
+                image: (p.images && p.images[0] && p.images[0] !== 'EMPTY') ? p.images[0] : 'https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image',
                 features: [`${p.bhk} BHK`, `${p.sqft} sqft`]
               }} />
               

@@ -4,21 +4,136 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import styles from './page.module.css';
-import { Timer, CheckCircle2, Camera, PlaySquare, BarChart2, Star, Crown, Zap, Share2, Link } from 'lucide-react';
+import { Timer, CheckCircle2, Camera, PlaySquare, BarChart2, Star, Crown, Zap, Share2, Link as LinkIcon, Users } from 'lucide-react';
+
+const plansData: any = {
+  'PG': {
+    Seller: [
+      {
+        id: 'basic', name: 'Basic', duration: '30 Days', price: 1250, visibility: 'Medium Visibility',
+        includes: ['Free includes 5 property listings', 'Unlimited property listing', 'Showcased 1 property for 1 week in top highlighted'],
+        addons: []
+      },
+      {
+        id: 'premium', name: 'Premium', duration: '30 Days', price: 2250, visibility: 'High Visibility',
+        includes: ['Unlimited property listing', 'Showcased 2 properties for 2 weeks in top highlighted', 'Feature property on Rentit’s official social'],
+        addons: []
+      },
+      {
+        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: 3950, visibility: 'High Visibility',
+        includes: ['Unlimited property listing', 'Showcased for 4 weeks in top highlighted', 'Facebook Ads & Google Ads', 'Feature property on Rentit’s official social', 'Custom photoshoots'],
+        addons: []
+      }
+    ],
+    User: [
+      {
+        id: 'basic', name: 'Basic', duration: '15 Days', price: 799, contacts: '10 Contacts',
+        includes: ['Advanced Filters'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      },
+      {
+        id: 'premium', name: 'Premium', duration: '30 Days', price: 899, contacts: '25 Contacts',
+        includes: ['Advanced filter', 'Property Info on Wp', 'Property posted date info'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      }
+    ]
+  },
+  'Apartment / Housing': {
+    Seller: [
+      {
+        id: 'basic', name: 'Basic', duration: '45 Days', price: 1549, visibility: '2x / (Medium)',
+        includes: ['Increased listing visibility'],
+        addons: [{ name: 'Photoshoot', price: '₹1,500' }]
+      },
+      {
+        id: 'premium', name: 'Premium', duration: '60 Days', price: 3549, visibility: 'High Visibility',
+        includes: ['Facebook Ads', 'Listing highlights', 'Verified tag on property'],
+        addons: [
+          { name: 'Photoshoot', price: '₹750' },
+          { name: 'AI Video', price: '₹2,000', subs: ['SM ad campaign', 'Reusable video link', 'Post property in official rentit SM channel'] }
+        ]
+      },
+      {
+        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: 5349, visibility: 'High Visibility',
+        includes: ['Facebook Ads & Google Ads', 'Reports & Insights', 'Listing highlight', 'Rank top in search for 24 hrs', 'Verified tag on property'],
+        addons: [
+          { name: 'Photoshoot', price: '₹750' },
+          { name: 'AI Video', price: '₹2,000', subs: ['SM ad campaign', 'Reusable video link', 'Post property in official rentit SM channel'] }
+        ]
+      }
+    ],
+    User: [
+      {
+        id: 'basic', name: 'Basic', duration: '45 Days', price: 1449, contacts: '20 Contacts',
+        includes: ['Advanced Filters'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      },
+      {
+        id: 'premium', name: 'Premium', duration: '60 Days', price: 3499, contacts: '50 Contacts',
+        includes: ['Advanced Filters', 'Interior design consultation'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      },
+      {
+        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: 4499, contacts: '50 Contacts',
+        includes: ['Advanced filter', 'Property Info on Wp', 'Interior Design consultation', 'Property posted date info'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      }
+    ]
+  },
+  'Commercial': {
+    Seller: [
+      {
+        id: 'basic', name: 'Basic', duration: '45 Days', price: 3299, visibility: 'Medium Visibility',
+        includes: ['Increased listing visibility'],
+        addons: [{ name: 'Photoshoot', price: '₹1,500' }]
+      },
+      {
+        id: 'premium', name: 'Premium', duration: '90 Days', price: 5299, visibility: 'High Visibility',
+        includes: ['Facebook Ads', 'Verified tag on property', 'Listing Highlight'],
+        addons: [
+          { name: 'Photoshoot', price: '₹750' },
+          { name: 'AI Video', price: '₹2,000', subs: ['SM ad campaign', 'Reusable video link', 'Opportunity to post property in official rentit SM channel'] }
+        ]
+      },
+      {
+        id: 'premium-plus', name: 'Premium+', duration: '90 Days', price: 6999, visibility: 'High Visibility',
+        includes: ['Facebook Ads & google ads', 'Reports & Insights', 'Listing highlight', 'Rank top in search for 24 hrs', 'Verified tag on property'],
+        addons: [
+          { name: 'Photoshoot', price: '₹750' },
+          { name: 'AI Video', price: '₹2,000', subs: ['SM ad campaign', 'Reusable video link', 'Feature your property on Rentit’s official social channels'] }
+        ]
+      }
+    ],
+    User: [
+      {
+        id: 'basic', name: 'Basic', duration: '90 Days', price: 1099, contacts: '25 Contacts',
+        includes: ['Advanced Filters'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      },
+      {
+        id: 'premium', name: 'Premium', duration: '45 Days', price: 2599, contacts: '50 Contacts',
+        includes: ['Advanced Filters', 'Interior design consultation'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      },
+      {
+        id: 'premium-plus', name: 'Premium+', duration: '45 Days', price: 4599, contacts: '50 Contacts',
+        includes: ['Advanced filter', 'Property Info on Wp', 'Interior Design consultation', 'Property posted date info'],
+        addons: [{ name: '2 Contacts', price: '₹75' }]
+      }
+    ]
+  }
+};
 
 export default function PremiumPlansPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('Apartment / Housing');
-
-  const tabs = ['PG', 'Apartment / Housing', 'Commercial', 'Flatmate'];
-
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
+  const [role, setRole] = useState<'Seller' | 'User'>('Seller');
+  const tabs = ['PG', 'Apartment / Housing', 'Commercial'];
+  const [timeLeft, setTimeLeft] = useState(300);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
-    const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
-    }, 1000);
+    const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
     return () => clearInterval(timer);
   }, [timeLeft]);
 
@@ -28,15 +143,39 @@ export default function PremiumPlansPage() {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  const activePlans = plansData[activeTab]?.[role] || [];
+  const basicPlan = activePlans.find((p: any) => p.id === 'basic');
+  const premiumPlan = activePlans.find((p: any) => p.id === 'premium');
+  const premiumPlusPlan = activePlans.find((p: any) => p.id === 'premium-plus');
+
   return (
     <div className={styles.pageContainer}>
       <Navbar hideSearchBar={true} />
       
       <div className={styles.headerSection}>
-        <h1 className={styles.pageTitle}>Boost Your Property Visibility</h1>
+        <h1 className={styles.pageTitle}>{role === 'Seller' ? 'Boost Your Property Visibility' : 'Find Your Dream Property Faster'}</h1>
         <p className={styles.pageSubtitle}>
-          Get more enquiries, better visibility, and faster occupancy with Rentit Premium. Join 50,000+ property owners.
+          {role === 'Seller' 
+            ? 'Get more enquiries, better visibility, and faster occupancy with Rentit Premium.' 
+            : 'Get exclusive owner contacts, advanced filters, and premium support with Rentit Premium.'}
         </p>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', background: '#F3F4F6', borderRadius: '12px', padding: '4px' }}>
+          <button 
+            onClick={() => setRole('Seller')}
+            style={{ padding: '8px 24px', borderRadius: '8px', border: 'none', background: role === 'Seller' ? '#111827' : 'transparent', color: role === 'Seller' ? 'white' : '#6B7280', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
+          >
+            Seller Plans
+          </button>
+          <button 
+            onClick={() => setRole('User')}
+            style={{ padding: '8px 24px', borderRadius: '8px', border: 'none', background: role === 'User' ? '#111827' : 'transparent', color: role === 'User' ? 'white' : '#6B7280', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
+          >
+            User Plans
+          </button>
+        </div>
       </div>
 
       <div className={styles.tabsContainer}>
@@ -64,24 +203,21 @@ export default function PremiumPlansPage() {
       <div className={styles.cardsWrapper}>
         
         {/* Basic Plan */}
+        {basicPlan && (
         <div className={styles.card}>
           <div className={styles.planNameWrapper}>
             <div className={`${styles.planName} ${styles.planNameBasic}`}>Basic</div>
             <div className={styles.validity}>
-              <Timer size={14} /> 45 Days Validity
+              <Timer size={14} /> {basicPlan.duration} Validity
             </div>
             <div className={`${styles.visibilityBadge} ${styles.visibilityMedium}`}>
-              <BarChart2 size={12} strokeWidth={3} /> 2x Visibility (Medium)
+              {role === 'Seller' ? <><BarChart2 size={12} strokeWidth={3} /> {basicPlan.visibility}</> : <><Users size={12} strokeWidth={3} /> {basicPlan.contacts}</>}
             </div>
           </div>
 
           <div className={styles.priceContainer}>
             <div className={styles.price}>
-              <span className={styles.rupee}>₹</span>1,549
-            </div>
-            <div className={styles.originalPriceWrapper}>
-              <span className={styles.strikePrice}>₹2,818</span>
-              <span className={styles.discount}>— 45% off</span>
+              <span className={styles.rupee}>₹</span>{basicPlan.price}
             </div>
           </div>
 
@@ -89,37 +225,39 @@ export default function PremiumPlansPage() {
 
           <div className={styles.sectionTitle}>INCLUDES</div>
           <ul className={styles.featureList}>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Increased listing visibility
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Listing promotion in feed
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Priority discovery
-            </li>
+            {basicPlan.includes.map((feat: string, i: number) => (
+              <li key={i} className={styles.featureItem}>
+                <CheckCircle2 size={18} color="#10B981" /> {feat}
+              </li>
+            ))}
           </ul>
 
-          <div className={styles.sectionTitle} style={{marginTop: '24px'}}>AVAILABLE ADD-ON</div>
-          <div className={styles.addonsBox}>
-            <div className={styles.addonItem}>
-              <Camera size={16} color="#F59E0B" />
-              <div>Photoshoot <span className={styles.addonPrice}>₹1,500</span></div>
-            </div>
-          </div>
+          {basicPlan.addons && basicPlan.addons.length > 0 && (
+            <>
+              <div className={styles.sectionTitle} style={{marginTop: '24px'}}>AVAILABLE ADD-ON</div>
+              <div className={styles.addonsBox}>
+                {basicPlan.addons.map((addon: any, i: number) => (
+                  <div key={i} className={styles.addonItem}>
+                    <Camera size={16} color="#F59E0B" />
+                    <div>{addon.name} <span className={styles.addonPrice}>{addon.price}</span></div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
           <button 
             className={`${styles.actionBtn} ${styles.btnBasic}`}
-            onClick={() => router.push('/premium/checkout?plan=basic')}
+            style={{ marginTop: 'auto' }}
+            onClick={() => router.push(`/premium/checkout?plan=basic&category=${activeTab}&role=${role}`)}
           >
             Choose Basic
           </button>
         </div>
+        )}
 
         {/* Premium Plan */}
+        {premiumPlan && (
         <div className={`${styles.card} ${styles.cardPremium}`}>
           <div className={`${styles.badge} ${styles.badgePremium}`}>
             <Star size={10} fill="white" /> MOST POPULAR
@@ -127,20 +265,16 @@ export default function PremiumPlansPage() {
           <div className={styles.planNameWrapper}>
             <div className={`${styles.planName} ${styles.planNamePremium}`}>Premium</div>
             <div className={styles.validity}>
-              <Timer size={14} /> 60 Days Validity
+              <Timer size={14} /> {premiumPlan.duration} Validity
             </div>
             <div className={`${styles.visibilityBadge} ${styles.visibilityHigh}`}>
-              <BarChart2 size={12} strokeWidth={3} /> High Visibility
+              {role === 'Seller' ? <><BarChart2 size={12} strokeWidth={3} /> {premiumPlan.visibility}</> : <><Users size={12} strokeWidth={3} /> {premiumPlan.contacts}</>}
             </div>
           </div>
 
           <div className={styles.priceContainer}>
             <div className={styles.price}>
-              <span className={styles.rupee}>₹</span>3,549
-            </div>
-            <div className={styles.originalPriceWrapper}>
-              <span className={styles.strikePrice}>₹6,453</span>
-              <span className={styles.discount}>— 45% off</span>
+              <span className={styles.rupee}>₹</span>{premiumPlan.price}
             </div>
           </div>
 
@@ -148,52 +282,46 @@ export default function PremiumPlansPage() {
 
           <div className={styles.sectionTitle}>INCLUDES</div>
           <ul className={styles.featureList}>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Facebook Ads promotion
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Listing Highlights
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Verified Tag on Property
-            </li>
+            {premiumPlan.includes.map((feat: string, i: number) => (
+              <li key={i} className={styles.featureItem}>
+                <CheckCircle2 size={18} color="#10B981" /> {feat}
+              </li>
+            ))}
           </ul>
 
-          <div className={styles.sectionTitle} style={{marginTop: '24px'}}>AVAILABLE ADD-ONS</div>
-          <div className={styles.addonsBox}>
-            <div className={styles.addonItem}>
-              <Camera size={16} color="#F59E0B" />
-              <div>Photoshoot <span className={styles.addonPrice}>₹750</span></div>
-            </div>
-            <div className={styles.addonItem}>
-              <PlaySquare size={16} color="#F59E0B" />
-              <div>
-                <div>AI Video <span className={styles.addonPrice}>₹2,000</span></div>
-                <div className={styles.addonSubtext} style={{marginTop: '8px'}}>
-                  <Share2 size={10} /> Social Media Ad Campaign
-                </div>
-                <div className={styles.addonSubtext}>
-                  <Link size={10} /> Reusable Video Link
-                </div>
-                <div className={styles.addonSubtext}>
-                  <Share2 size={10} /> Post on Rentit official channels
-                </div>
+          {premiumPlan.addons && premiumPlan.addons.length > 0 && (
+            <>
+              <div className={styles.sectionTitle} style={{marginTop: '24px'}}>AVAILABLE ADD-ONS</div>
+              <div className={styles.addonsBox}>
+                {premiumPlan.addons.map((addon: any, i: number) => (
+                  <div key={i} className={styles.addonItem}>
+                    {addon.name.includes('Video') ? <PlaySquare size={16} color="#F59E0B" /> : <Camera size={16} color="#F59E0B" />}
+                    <div>
+                      <div>{addon.name} <span className={styles.addonPrice}>{addon.price}</span></div>
+                      {addon.subs && addon.subs.map((sub: string, j: number) => (
+                        <div key={j} className={styles.addonSubtext} style={{marginTop: j===0 ? '8px' : '0'}}>
+                          {sub.includes('link') ? <LinkIcon size={10} /> : <Share2 size={10} />} {sub}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          </div>
+            </>
+          )}
 
           <button 
             className={`${styles.actionBtn} ${styles.btnPremium}`}
-            onClick={() => router.push('/premium/checkout?plan=premium')}
+            style={{ marginTop: 'auto' }}
+            onClick={() => router.push(`/premium/checkout?plan=premium&category=${activeTab}&role=${role}`)}
           >
             Choose Premium
           </button>
         </div>
+        )}
 
         {/* Premium+ Plan */}
+        {premiumPlusPlan && (
         <div className={`${styles.card} ${styles.cardPremiumPlus}`}>
           <div className={`${styles.badge} ${styles.badgePremiumPlus}`}>
             <Crown size={10} fill="white" /> PREMIUM+
@@ -201,20 +329,16 @@ export default function PremiumPlansPage() {
           <div className={styles.planNameWrapper}>
             <div className={`${styles.planName} ${styles.planNamePremiumPlus}`}>Premium+</div>
             <div className={styles.validity}>
-              <Timer size={14} /> 60 Days Validity
+              <Timer size={14} /> {premiumPlusPlan.duration} Validity
             </div>
             <div className={`${styles.visibilityBadge} ${styles.visibilityHigh}`}>
-              <BarChart2 size={12} strokeWidth={3} /> High Visibility
+              {role === 'Seller' ? <><BarChart2 size={12} strokeWidth={3} /> {premiumPlusPlan.visibility}</> : <><Users size={12} strokeWidth={3} /> {premiumPlusPlan.contacts}</>}
             </div>
           </div>
 
           <div className={styles.priceContainer}>
             <div className={styles.price}>
-              <span className={styles.rupee}>₹</span>5,349
-            </div>
-            <div className={styles.originalPriceWrapper}>
-              <span className={styles.strikePrice}>₹9,726</span>
-              <span className={styles.discount}>— 45% off</span>
+              <span className={styles.rupee}>₹</span>{premiumPlusPlan.price}
             </div>
           </div>
 
@@ -222,47 +346,43 @@ export default function PremiumPlansPage() {
 
           <div className={styles.sectionTitle}>EVERYTHING IN PREMIUM, PLUS</div>
           <ul className={styles.featureList}>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Facebook Ads & Google Ads
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Reports & Insights dashboard
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Listing Highlight badge
-            </li>
-            <li className={`${styles.featureItem} ${styles.featureItemRed}`}>
-              <Zap size={18} color="#EF4444" fill="#EF4444" />
-              Rank Top in Search for 24 Hours
-            </li>
-            <li className={styles.featureItem}>
-              <CheckCircle2 size={18} color="#10B981" />
-              Verified Tag on Property
-            </li>
+            {premiumPlusPlan.includes.map((feat: string, i: number) => (
+              <li key={i} className={feat.includes('Rank top') ? `${styles.featureItem} ${styles.featureItemRed}` : styles.featureItem}>
+                {feat.includes('Rank top') ? <Zap size={18} color="#EF4444" fill="#EF4444" /> : <CheckCircle2 size={18} color="#10B981" />} {feat}
+              </li>
+            ))}
           </ul>
 
-          <div className={styles.sectionTitle} style={{marginTop: '24px'}}>AVAILABLE ADD-ONS</div>
-          <div className={styles.addonsBox}>
-            <div className={styles.addonItem}>
-              <Camera size={16} color="#F59E0B" />
-              <div>Photoshoot <span className={styles.addonPrice}>₹750</span></div>
-            </div>
-            <div className={styles.addonItem}>
-              <PlaySquare size={16} color="#F59E0B" />
-              <div>AI Video <span className={styles.addonPrice}>₹2,000</span></div>
-            </div>
-          </div>
+          {premiumPlusPlan.addons && premiumPlusPlan.addons.length > 0 && (
+            <>
+              <div className={styles.sectionTitle} style={{marginTop: '24px'}}>AVAILABLE ADD-ONS</div>
+              <div className={styles.addonsBox}>
+                {premiumPlusPlan.addons.map((addon: any, i: number) => (
+                  <div key={i} className={styles.addonItem}>
+                    {addon.name.includes('Video') ? <PlaySquare size={16} color="#F59E0B" /> : <Camera size={16} color="#F59E0B" />}
+                    <div>
+                      <div>{addon.name} <span className={styles.addonPrice}>{addon.price}</span></div>
+                      {addon.subs && addon.subs.map((sub: string, j: number) => (
+                        <div key={j} className={styles.addonSubtext} style={{marginTop: j===0 ? '8px' : '0'}}>
+                          {sub.includes('link') ? <LinkIcon size={10} /> : <Share2 size={10} />} {sub}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
           <button 
             className={`${styles.actionBtn} ${styles.btnPremiumPlus}`}
-            onClick={() => router.push('/premium/checkout?plan=premium-plus')}
+            style={{ marginTop: 'auto' }}
+            onClick={() => router.push(`/premium/checkout?plan=premium-plus&category=${activeTab}&role=${role}`)}
           >
             Choose Premium+
           </button>
         </div>
+        )}
 
       </div>
 

@@ -48,7 +48,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           alt={property.title} 
           className={styles.image} 
           onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800';
+            if (!(e.target as HTMLImageElement).src.includes('placehold.co')) {
+              (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image';
+            }
           }}
           ref={(img) => {
             if (img && img.complete && img.naturalWidth === 0) {

@@ -128,7 +128,7 @@ const RecommendedCard = ({ property }: { property: any }) => {
           alt={property.title} 
           className={styles.cardImg} 
           onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800';
+            (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image';
           }}
         />
         <button
@@ -207,7 +207,7 @@ export default function RecommendedSection({ initialProperties = [] }: { initial
             location: prop.location_address || prop.city || prop.location || 'Unknown Location',
             price: prop.price || prop.rent || '0',
             features: prop.features || (prop.type || prop.propertyType ? [prop.bhk ? `${prop.bhk}` : '', prop.type || prop.propertyType].filter(Boolean) : ['Property']),
-            image: prop.image || prop.image_url || (prop.images && prop.images[0]) || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600',
+            image: prop.image || prop.image_url || (prop.images && prop.images[0]) || 'https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image',
             date: prop.created_at || prop.createdAt || new Date().toISOString()
           })));
         }
@@ -236,7 +236,7 @@ export default function RecommendedSection({ initialProperties = [] }: { initial
       location: prop.location_address || prop.city || prop.location || 'Unknown Location',
       price: prop.price || prop.rent || '0',
       features: prop.features || (prop.type || prop.propertyType ? [prop.bhk ? `${prop.bhk}` : '', prop.type || prop.propertyType].filter(Boolean) : ['Property']),
-      image: prop.image || prop.image_url || (prop.images && prop.images[0]) || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600',
+      image: prop.image || prop.image_url || (prop.images && prop.images[0]) || 'https://placehold.co/600x400/E5E7EB/9CA3AF?text=No+Image',
       date: prop.created_at || new Date().toISOString()
     }));
   }, [initialProperties]);
