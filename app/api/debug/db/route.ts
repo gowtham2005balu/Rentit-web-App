@@ -10,7 +10,7 @@ export async function GET() {
       WHERE table_schema = 'public'
     `);
     
-    let properties = [];
+    let properties: any = {};
     try {
       const apt = await pool.query('SELECT * FROM "Apartment" LIMIT 5');
       const comm = await pool.query('SELECT * FROM "Commercial" LIMIT 5');
