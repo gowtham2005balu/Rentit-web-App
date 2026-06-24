@@ -86,13 +86,13 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
     baths: rawProp.baths || rawProp.bathrooms || details.bathrooms || 2
   };
 
-  // Ensure 5 images exist for the grid by padding with default images if necessary
+  // Always maintain the 5-box layout for the UI design, but use 'EMPTY' for missing images
   const displayImages = [
-    p.images[0] || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
-    p.images[1] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
-    p.images[2] || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=600",
-    p.images[3] || "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600",
-    p.images[4] || "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&q=80&w=600",
+    p.images[0] || "EMPTY",
+    p.images[1] || "EMPTY",
+    p.images[2] || "EMPTY",
+    p.images[3] || "EMPTY",
+    p.images[4] || "EMPTY",
   ];
 
   const similarApartments = [
