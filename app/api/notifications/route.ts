@@ -49,16 +49,9 @@ export async function GET(req: Request) {
       throw e;
     }
 
-    try {
-      require('fs').writeFileSync('d:\\huzzler web App\\debug.log', JSON.stringify({ userId, rows }, null, 2));
-    } catch(e) {}
-
     return NextResponse.json({ notifications: rows });
   } catch (error: any) {
     console.error('Failed to fetch notifications:', error);
-    try {
-      require('fs').writeFileSync('d:\\huzzler web App\\error.log', JSON.stringify({ message: "Fetch notifications failed", details: error.message, stack: error.stack }, null, 2));
-    } catch(err) {}
     return NextResponse.json({ error: 'Failed to fetch notifications', details: error.message }, { status: 500 });
   }
 }

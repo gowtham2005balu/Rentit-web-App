@@ -4,7 +4,6 @@ import pool from '@/lib/db';
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    require('fs').writeFileSync('C:\\Users\\Admin\\Downloads\\Rentit-web-App\\antigravity-d-drive.log', 'Hit D drive route: ' + new Date().toISOString() + '\\nData: ' + JSON.stringify(data));
     const type = data.type || data.propertyCategory || 'Residential';
 
     if (!data.userId) {
@@ -68,7 +67,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, propertyId: result.rows[0].id });
   } catch (error: any) {
-    require('fs').appendFileSync('C:\\Users\\Admin\\Downloads\\Rentit-web-App\\antigravity-d-drive.log', '\\nERROR: ' + error.message + '\\nSTACK: ' + error.stack);
     console.error("Failed to create property:", error);
     return NextResponse.json({ success: false, error: 'Failed to create property', details: error, stack: error.stack, pgMessage: error.message }, { status: 500 });
   }
