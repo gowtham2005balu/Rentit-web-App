@@ -14,6 +14,12 @@ import CareersOpenRoles from "../../components/Career/careers_open_roles";
 import CareersTestimonials from "../../components/Career/careers_testimonials";
 import JoinUs from "../../components/Career/joinus";
 
+export const metadata = {
+  title: "Careers at RentIt – Join Our Team in Chennai",
+  description: "Join the RentIt team and help transform the rental market in Chennai. Explore open roles in engineering, design, sales and operations at our Chennai office.",
+  alternates: { canonical: "https://rentit.in/careers" },
+};
+
 export default function Careers() {
   return (
     <div className="bg-white min-h-screen">

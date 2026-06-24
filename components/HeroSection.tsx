@@ -75,7 +75,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className={styles.heroWrapper}>
+    <section className={styles.heroWrapper} role="img" aria-label="Rental listings banner showing apartments and PGs available in Chennai">
       <div className={styles.heroOverlay} />
       
       <div className={styles.heroContent}>

@@ -7,7 +7,6 @@ import ImageWithFallback from '../../../components/ImageWithFallback';
 import ContactOwnerButton from '../../../components/ContactOwnerButton';
 import SidebarActions from './SidebarActions';
 import ImageGallery from './ImageGallery';
-import { properties as mockProperties, ownerListedProperties, metroListedProperties, newProjects } from '../../../data/mockData';
 import { fetchBackend, fetchAllProperties, fetchPropertyById } from '../../../lib/backend';
 
 export const dynamic = 'force-dynamic';
@@ -26,11 +25,6 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   allProperties = await fetchAllProperties();
 
 
-  if (!rawProp) {
-    const allMocks = [...mockProperties, ...ownerListedProperties, ...metroListedProperties, ...newProjects];
-    rawProp = allMocks.find(p => p.id === id || p.id.toString() === id);
-    if (allProperties.length === 0) allProperties = allMocks;
-  }
 
   if (!rawProp) {
     return (

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { fetchPropertyById } from '@/lib/backend';
-import { newProjects, properties as mockProperties, ownerListedProperties, metroListedProperties } from '@/data/mockData';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -72,11 +71,7 @@ export async function GET(request: Request) {
         // Fetch real property data
         let propertyData: any = await fetchPropertyById(row.propertyId);
 
-        if (!propertyData) {
-          // Fallback to mock data if not found in real DB
-          propertyData = [...newProjects, ...mockProperties, ...ownerListedProperties, ...metroListedProperties].find(p => p.id === String(row.propertyId));
-        }
-        
+
         let title = `Property ID: ${row.propertyId}`;
         let location = 'Location not specified';
         let price: any = 0;

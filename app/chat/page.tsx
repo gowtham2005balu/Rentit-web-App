@@ -7,8 +7,6 @@ import { Search, MoreVertical, Eye, Paperclip, Send, Home, Calendar, BellOff, Ba
 import styles from './page.module.css';
 
 import { useAuth } from '@/context/AuthContext';
-import { properties } from '../../data/mockData';
-
 export default function ChatPage() {
   const { userId } = useAuth();
   const [chats, setChats] = useState<any[]>([]);

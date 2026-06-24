@@ -129,7 +129,7 @@ const Navbar: React.FC<NavbarProps> = ({ hideSearchBar = false }) => {
         <div className={styles.container}>
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <div className={styles.logoSection}>
+            <div className={styles.logoSection} aria-label="RentIt – Chennai Rental Marketplace">
               <span className={styles.logoTextDark}>RENT</span>
               <span className={styles.logoTextOrange}>IT</span>
             </div>

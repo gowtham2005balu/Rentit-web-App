@@ -10,7 +10,6 @@ import GridPropertyCard from '../../components/GridPropertyCard';
 import PremiumBanner from '../../components/PremiumBanner';
 import PackersBanner from '../../components/PackersBanner';
 import LocalityCard from '../../components/LocalityCard';
-import { properties, ownerListedProperties, metroListedProperties, trendingLocalities } from '../../data/mockData';
 import styles from '../page.module.css';
 import { ChevronRight, ChevronDown, Train, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -198,17 +197,6 @@ export default async function CommercialList({ searchParams }: { searchParams: P
                 </div>
               )}
 
-              <div style={{ marginTop: '32px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Trending Localities</h2>
-                  <a href="/commercial" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>Explore &rarr;</a>
-                </div>
-                <div className={styles.scrollContainer}>
-                  {trendingLocalities.map(locality => (
-                    <LocalityCard key={`trending-${locality.id}`} locality={locality} />
-                  ))}
-                </div>
-              </div>
 
               <div className={styles.pagination}>
                 <button className={styles.pageBtn}><ChevronLeft size={14} style={{ marginRight: '4px' }}/> Prev</button>

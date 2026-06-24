@@ -4,9 +4,9 @@ import fs from 'fs';
 import path from 'path';
 
 export const metadata: Metadata = {
-  title: "Huzzler Blog – Renting Tips, Market Trends & City Living",
-  description: "Read the Huzzler blog for expert renting tips, neighbourhood guides, rental market trends, and advice for tenants and property owners.",
-  alternates: { canonical: "https://huzzler.in/blog" },
+  title: "RentIt Blog – Renting Tips, Market Trends & Chennai Living",
+  description: "Read the RentIt blog for expert renting tips, Chennai neighbourhood guides, rental market trends and advice for tenants and property owners.",
+  alternates: { canonical: "https://rentit.in/blog" },
 };
 
 export default function Blog() {

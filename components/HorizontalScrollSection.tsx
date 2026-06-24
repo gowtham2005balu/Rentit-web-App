@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { newProjects } from '../data/mockData';
+
 import { ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import styles from './HorizontalScrollSection.module.css';
@@ -19,7 +19,10 @@ const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({ prope
     priceRange: p.price ? `₹${Number(p.price).toLocaleString('en-IN')}/month` : 'Contact for Price',
     status: p.availability || 'Ready to move',
     imageUrl: p.imageUrl || p.image_url || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=600'
-  })) : newProjects;
+  })) : [];
+
+  if (displayProjects.length === 0) return null;
+
   return (
     <section className={styles.section}>
       <div className={styles.header}>

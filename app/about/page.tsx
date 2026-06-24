@@ -14,8 +14,9 @@ import JoinTheJourney from '../../components/about/JoinTheJourney';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'About RentIt - Our Mission, Vision & Values',
-  description: 'Learn more about RentIt, our mission, vision, and the future of property discovery.',
+  title: "About RentIt – Chennai's Trusted Rental Marketplace",
+  description: "Learn about RentIt, Chennai's leading rental platform connecting tenants and owners since 2022. Our mission is to make renting simple, safe and transparent.",
+  alternates: { canonical: "https://rentit.in/about" },
 };
 
 export default function AboutUsPage() {

@@ -4,9 +4,26 @@ import Link from 'next/link';
 import { Heart, Share2, MapPin, Train, Square, Users, Sofa, Eye, User, Camera } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
-import { Property } from '../data/mockData';
 import ContactOwnerButton from './ContactOwnerButton';
 import styles from './PropertyCard.module.css';
+
+export interface Property {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  deposit?: number;
+  bhk?: number;
+  baths?: number;
+  sqft?: number;
+  furnishing?: string;
+  availability?: string;
+  imageUrl?: string;
+  isPromoted?: boolean;
+  agentName?: string;
+  isNewProject?: boolean;
+  metroDistance?: string;
+}
 
 interface PropertyCardProps {
   property: Property;
@@ -45,7 +62,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
       <div className={styles.imageContainer}>
         <img 
           src={property.imageUrl} 
-          alt={property.title} 
+          alt={`${property.bhk ? property.bhk + 'BHK' : ''} property for rent in ${property.location} – ₹${property.price}/month`} 
           className={styles.image} 
           onError={(e) => {
             if (!(e.target as HTMLImageElement).src.includes('placehold.co')) {

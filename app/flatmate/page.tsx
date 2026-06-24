@@ -10,7 +10,6 @@ import GridPropertyCard from '../../components/GridPropertyCard';
 import PremiumBanner from '../../components/PremiumBanner';
 import PackersBanner from '../../components/PackersBanner';
 import LocalityCard from '../../components/LocalityCard';
-import { properties, ownerListedProperties, metroListedProperties, trendingLocalities } from '../../data/mockData';
 import styles from '../page.module.css';
 import { ChevronRight, ChevronDown, Train, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -103,10 +102,9 @@ export default async function FlatmatesList({ searchParams }: { searchParams: Pr
     return matchesPropType && matchesRoomType && matchesAvailability && matchesTenant && matchesFurnishing && matchesParking && matchesRent;
   };
 
-  const filteredProperties = [...liveProperties, ...properties].filter(p => applyFilters(p, false));
-  const filteredOwnerListed = ownerListedProperties.filter(p => applyFilters(p, true));
-  const filteredMetroListed = metroListedProperties.filter(p => applyFilters(p, true));
-  const liveTrendingLocalities = trendingLocalities;
+  const filteredProperties = liveProperties.filter(p => applyFilters(p, false));
+  const filteredOwnerListed = liveProperties.filter(p => applyFilters(p, true));
+  const filteredMetroListed = liveProperties.filter(p => applyFilters(p, true));
   return (
     <div className={styles.page}>
       <Navbar />
@@ -203,17 +201,6 @@ export default async function FlatmatesList({ searchParams }: { searchParams: Pr
                 </div>
               )}
 
-              <div style={{ marginTop: '32px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Trending Localities</h2>
-                  <a href="/flatmate" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>Explore &rarr;</a>
-                </div>
-                <div className={styles.scrollContainer}>
-                  {liveTrendingLocalities.map(locality => (
-                    <LocalityCard key={locality.id} locality={locality} />
-                  ))}
-                </div>
-              </div>
 
               <div className={styles.pagination}>
                 <button className={styles.pageBtn}><ChevronLeft size={14} style={{ marginRight: '4px' }}/> Prev</button>
@@ -230,7 +217,7 @@ export default async function FlatmatesList({ searchParams }: { searchParams: Pr
           </div>
           
           {/* Right Sidebar */}
-          <RightSidebarWidgets recentItems={[...liveProperties, ...properties].slice(0, 3).map(p => ({
+          <RightSidebarWidgets recentItems={liveProperties.slice(0, 3).map(p => ({
             id: String(p.id),
             title: p.title,
             location: p.location,

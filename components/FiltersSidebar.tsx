@@ -1,9 +1,16 @@
 "use client";
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { filterOptions } from '../data/mockData';
+
 import styles from './FiltersSidebar.module.css';
 import { ChevronUp, ChevronDown, RotateCcw } from 'lucide-react';
+
+const filterOptions = {
+  locations: ['Adyar', 'Velachery', 'ECR', 'OMR', 'Porur', 'Mogappair'],
+  propertyTypes: ['Apartment', 'Villa', 'Independent House', 'Builder Floor'],
+  bhk: ['1 BHK', '2 BHK', '3 BHK', '4+ BHK'],
+  furnishing: ['Fully Furnished', 'Semi Furnished', 'Unfurnished']
+};
 
 const FiltersSidebarContent = () => {
   const router = useRouter();

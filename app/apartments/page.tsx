@@ -10,7 +10,6 @@ import GridPropertyCard from '../../components/GridPropertyCard';
 import PremiumBanner from '../../components/PremiumBanner';
 import PackersBanner from '../../components/PackersBanner';
 import LocalityCard from '../../components/LocalityCard';
-import { properties as mockProperties, ownerListedProperties, metroListedProperties, trendingLocalities } from '../../data/mockData';
 import styles from '../page.module.css';
 import { ChevronRight, ChevronDown, Train, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -129,9 +128,7 @@ export default async function ApartmentsList({ searchParams }: { searchParams: P
     tenantPref: p.tenant_pref || p.tenantPref || 'Anyone'
   }));
 
-  const propertiesToUse = realProperties.length > 0 ? realProperties : mockProperties;
-
-  let filteredAll = propertiesToUse.filter(p => applyFilters(p, false));
+  let filteredAll = realProperties.filter(p => applyFilters(p, false));
   
   if (sortParam === 'price_asc') {
     filteredAll.sort((a, b) => a.price - b.price);
@@ -189,7 +186,7 @@ export default async function ApartmentsList({ searchParams }: { searchParams: P
               ))}
             </div>
             
-            <HorizontalScrollSection properties={propertiesToUse.slice(0, 8)} />
+            <HorizontalScrollSection properties={realProperties.slice(0, 8)} />
             
             <div className={styles.standardSection}>
               <JioBanner />
@@ -238,17 +235,6 @@ export default async function ApartmentsList({ searchParams }: { searchParams: P
                 </div>
               )}
 
-              <div style={{ marginTop: '32px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h2 className={styles.sectionTitle} style={{ margin: 0 }}>Trending Localities</h2>
-                  <a href="/apartments" style={{ color: '#D97706', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>Explore &rarr;</a>
-                </div>
-                <div className={styles.scrollContainer}>
-                  {trendingLocalities.map(locality => (
-                    <LocalityCard key={locality.id} locality={locality} />
-                  ))}
-                </div>
-              </div>
 
               <div className={styles.pagination}>
                 <button className={styles.pageBtn}><ChevronLeft size={14} style={{ marginRight: '4px' }}/> Prev</button>

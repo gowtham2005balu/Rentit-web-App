@@ -16,6 +16,7 @@ import Footer from '../components/Footer';
 import { fetchAllProperties } from '../lib/backend';
 import styles from './page.module.css';
 
+
 async function getProperties() {
   try {
     const rows = await fetchAllProperties();

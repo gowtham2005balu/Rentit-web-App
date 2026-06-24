@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { WishlistProvider } from '../context/WishlistContext';
@@ -9,11 +9,32 @@ import Script from 'next/script';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-export const metadata: Metadata = {
-  title: "RentIt - Premium Real Estate",
-  description: "Find your perfect apartment with RentIt",
+
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
+export const metadata: Metadata = {
+  title: {
+    template: '%s | RentIt',
+    default: 'RentIt - Premium Real Estate',
+  },
+  description: "Find your perfect apartment, PG, or commercial space with RentIt",
+  metadataBase: new URL('https://rentit.in'),
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'RentIt',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+};
 import Footer from '../components/Footer';
 
 export default function RootLayout({
