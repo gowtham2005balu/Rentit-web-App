@@ -1,0 +1,14 @@
+services:
+  # If your app is a React/Vite frontend:
+  - type: web
+    name: rentit-web-app
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist # Change this to 'build' if using Create React App
+    
+  # NOTE: If your app is a Node.js backend instead, delete the above and uncomment the below:
+  # - type: web
+  #   name: rentit-backend
+  #   env: node
+  #   buildCommand: npm install
+  #   startCommand: npm start
