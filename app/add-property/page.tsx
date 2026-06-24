@@ -7,6 +7,14 @@ import styles from './addProperty.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function AddPropertyPage() {
+  return (
+    <React.Suspense fallback={<div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>}>
+      <AddPropertyContent />
+    </React.Suspense>
+  );
+}
+
+function AddPropertyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
