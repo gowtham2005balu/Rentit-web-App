@@ -134,11 +134,7 @@ function AddPropertyContent() {
   const [directionTips, setDirectionTips] = useState('');
 
   // Step 6 State
-  const [images, setImages] = useState<string[]>([
-    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300&q=80',
-    'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=300&q=80',
-    'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=300&q=80'
-  ]);
+  const [images, setImages] = useState<string[]>([]);
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       Array.from(e.target.files).forEach(file => {
