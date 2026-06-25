@@ -4,8 +4,11 @@ import pool from '@/lib/db';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const mobile = body.mobile || body.phone;
-    if (!mobile) return NextResponse.json({ error: "Mobile number is required" }, { status: 400 });
+    let mobileRaw = body.mobile || body.phone;
+    if (!mobileRaw) return NextResponse.json({ error: "Mobile number is required" }, { status: 400 });
+
+    // Sanitize to 10-digit local number (e.g., from "+91 9025835854" -> "9025835854")
+    const mobile = mobileRaw.replace(/\D/g, "").slice(-10);
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 

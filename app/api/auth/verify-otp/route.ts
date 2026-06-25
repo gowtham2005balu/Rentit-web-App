@@ -5,12 +5,15 @@ import pool from '@/lib/db';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const phone = body.mobile || body.phone;
-    const otp = body.otp;
+    let { mobile: mobileRaw, phone: phoneRaw, otp } = body;
+    let rawPhone = mobileRaw || phoneRaw;
 
-    if (!phone || !otp) {
-      return NextResponse.json({ error: "Phone and OTP are required" }, { status: 400 });
+    if (!rawPhone || !otp) {
+      return NextResponse.json({ error: "Mobile number and OTP are required" }, { status: 400 });
     }
+
+    // Sanitize to 10-digit local number
+    const phone = rawPhone.replace(/\D/g, "").slice(-10);
 
     // Ensure otp column exists (Prisma-created table may not have it)
     try {
