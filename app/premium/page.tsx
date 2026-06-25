@@ -6,33 +6,33 @@ import Navbar from '../../components/Navbar';
 import styles from './page.module.css';
 import { Timer, CheckCircle2, Camera, PlaySquare, BarChart2, Star, Crown, Zap, Share2, Link as LinkIcon, Users } from 'lucide-react';
 
-const plansData: any = {
+export const plansData: any = {
   'PG': {
     Seller: [
       {
-        id: 'basic', name: 'Basic', duration: '30 Days', price: 1250, visibility: 'Medium Visibility',
+        id: 'basic', name: 'Basic', duration: '30 Days', price: '1,250', basePrice: '1,059.32', gst: '190.68', visibility: 'Medium Visibility',
         includes: ['Free includes 5 property listings', 'Unlimited property listing', 'Showcased 1 property for 1 week in top highlighted'],
         addons: []
       },
       {
-        id: 'premium', name: 'Premium', duration: '30 Days', price: 2250, visibility: 'High Visibility',
+        id: 'premium', name: 'Premium', duration: '30 Days', price: '2,250', basePrice: '1,906.78', gst: '343.22', visibility: 'High Visibility',
         includes: ['Unlimited property listing', 'Showcased 2 properties for 2 weeks in top highlighted', 'Feature property on Rentit’s official social'],
         addons: []
       },
       {
-        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: 3950, visibility: 'High Visibility',
+        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: '3,950', basePrice: '3,347.46', gst: '602.54', visibility: 'High Visibility',
         includes: ['Unlimited property listing', 'Showcased for 4 weeks in top highlighted', 'Facebook Ads & Google Ads', 'Feature property on Rentit’s official social', 'Custom photoshoots'],
         addons: []
       }
     ],
     User: [
       {
-        id: 'basic', name: 'Basic', duration: '15 Days', price: 799, contacts: '10 Contacts',
+        id: 'basic', name: 'Basic', duration: '15 Days', price: '799', basePrice: '677.12', gst: '121.88', contacts: '10 Contacts',
         includes: ['Advanced Filters'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       },
       {
-        id: 'premium', name: 'Premium', duration: '30 Days', price: 899, contacts: '25 Contacts',
+        id: 'premium', name: 'Premium', duration: '30 Days', price: '899', basePrice: '761.86', gst: '137.14', contacts: '25 Contacts',
         includes: ['Advanced filter', 'Property Info on Wp', 'Property posted date info'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       }
@@ -41,12 +41,12 @@ const plansData: any = {
   'Apartment / Housing': {
     Seller: [
       {
-        id: 'basic', name: 'Basic', duration: '45 Days', price: 1549, visibility: '2x / (Medium)',
+        id: 'basic', name: 'Basic', duration: '45 Days', price: '1,549', basePrice: '1,312.71', gst: '236.29', visibility: '2x / (Medium)',
         includes: ['Increased listing visibility'],
         addons: [{ name: 'Photoshoot', price: '₹1,500' }]
       },
       {
-        id: 'premium', name: 'Premium', duration: '60 Days', price: 3549, visibility: 'High Visibility',
+        id: 'premium', name: 'Premium', duration: '60 Days', price: '3,549', basePrice: '3,007.63', gst: '541.37', visibility: 'High Visibility',
         includes: ['Facebook Ads', 'Listing highlights', 'Verified tag on property'],
         addons: [
           { name: 'Photoshoot', price: '₹750' },
@@ -54,7 +54,7 @@ const plansData: any = {
         ]
       },
       {
-        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: 5349, visibility: 'High Visibility',
+        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: '5,349', basePrice: '4,532.20', gst: '816.80', visibility: 'High Visibility',
         includes: ['Facebook Ads & Google Ads', 'Reports & Insights', 'Listing highlight', 'Rank top in search for 24 hrs', 'Verified tag on property'],
         addons: [
           { name: 'Photoshoot', price: '₹750' },
@@ -64,17 +64,17 @@ const plansData: any = {
     ],
     User: [
       {
-        id: 'basic', name: 'Basic', duration: '45 Days', price: 1449, contacts: '20 Contacts',
+        id: 'basic', name: 'Basic', duration: '45 Days', price: '1,449', basePrice: '1,228.81', gst: '220.19', contacts: '20 Contacts',
         includes: ['Advanced Filters'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       },
       {
-        id: 'premium', name: 'Premium', duration: '60 Days', price: 3499, contacts: '50 Contacts',
+        id: 'premium', name: 'Premium', duration: '60 Days', price: '3,499', basePrice: '2,965.25', gst: '533.75', contacts: '50 Contacts',
         includes: ['Advanced Filters', 'Interior design consultation'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       },
       {
-        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: 4499, contacts: '50 Contacts',
+        id: 'premium-plus', name: 'Premium+', duration: '60 Days', price: '4,499', basePrice: '3,813.56', gst: '685.44', contacts: '50 Contacts',
         includes: ['Advanced filter', 'Property Info on Wp', 'Interior Design consultation', 'Property posted date info'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       }
@@ -83,12 +83,12 @@ const plansData: any = {
   'Commercial': {
     Seller: [
       {
-        id: 'basic', name: 'Basic', duration: '45 Days', price: 3299, visibility: 'Medium Visibility',
+        id: 'basic', name: 'Basic', duration: '45 Days', price: '3,299', basePrice: '2,796.61', gst: '502.39', visibility: 'Medium Visibility',
         includes: ['Increased listing visibility'],
         addons: [{ name: 'Photoshoot', price: '₹1,500' }]
       },
       {
-        id: 'premium', name: 'Premium', duration: '90 Days', price: 5299, visibility: 'High Visibility',
+        id: 'premium', name: 'Premium', duration: '90 Days', price: '5,299', basePrice: '4,490.68', gst: '808.32', visibility: 'High Visibility',
         includes: ['Facebook Ads', 'Verified tag on property', 'Listing Highlight'],
         addons: [
           { name: 'Photoshoot', price: '₹750' },
@@ -96,7 +96,7 @@ const plansData: any = {
         ]
       },
       {
-        id: 'premium-plus', name: 'Premium+', duration: '90 Days', price: 6999, visibility: 'High Visibility',
+        id: 'premium-plus', name: 'Premium+', duration: '90 Days', price: '6,999', basePrice: '5,931.36', gst: '1,067.64', visibility: 'High Visibility',
         includes: ['Facebook Ads & google ads', 'Reports & Insights', 'Listing highlight', 'Rank top in search for 24 hrs', 'Verified tag on property'],
         addons: [
           { name: 'Photoshoot', price: '₹750' },
@@ -106,17 +106,17 @@ const plansData: any = {
     ],
     User: [
       {
-        id: 'basic', name: 'Basic', duration: '90 Days', price: 1099, contacts: '25 Contacts',
+        id: 'basic', name: 'Basic', duration: '90 Days', price: '1,099', basePrice: '931.36', gst: '167.64', contacts: '25 Contacts',
         includes: ['Advanced Filters'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       },
       {
-        id: 'premium', name: 'Premium', duration: '45 Days', price: 2599, contacts: '50 Contacts',
+        id: 'premium', name: 'Premium', duration: '45 Days', price: '2,599', basePrice: '2,202.54', gst: '396.46', contacts: '50 Contacts',
         includes: ['Advanced Filters', 'Interior design consultation'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       },
       {
-        id: 'premium-plus', name: 'Premium+', duration: '45 Days', price: 4599, contacts: '50 Contacts',
+        id: 'premium-plus', name: 'Premium+', duration: '45 Days', price: '4,599', basePrice: '3,897.46', gst: '701.54', contacts: '50 Contacts',
         includes: ['Advanced filter', 'Property Info on Wp', 'Interior Design consultation', 'Property posted date info'],
         addons: [{ name: '2 Contacts', price: '₹75' }]
       }
@@ -219,6 +219,11 @@ export default function PremiumPlansPage() {
             <div className={styles.price}>
               <span className={styles.rupee}>₹</span>{basicPlan.price}
             </div>
+            {basicPlan.basePrice && (
+              <div className={styles.taxInfo}>
+                (Base: ₹{basicPlan.basePrice} + 18% GST: ₹{basicPlan.gst})
+              </div>
+            )}
           </div>
 
           <div className={styles.divider}></div>
@@ -276,6 +281,11 @@ export default function PremiumPlansPage() {
             <div className={styles.price}>
               <span className={styles.rupee}>₹</span>{premiumPlan.price}
             </div>
+            {premiumPlan.basePrice && (
+              <div className={styles.taxInfo}>
+                (Base: ₹{premiumPlan.basePrice} + 18% GST: ₹{premiumPlan.gst})
+              </div>
+            )}
           </div>
 
           <div className={styles.divider}></div>
@@ -340,6 +350,11 @@ export default function PremiumPlansPage() {
             <div className={styles.price}>
               <span className={styles.rupee}>₹</span>{premiumPlusPlan.price}
             </div>
+            {premiumPlusPlan.basePrice && (
+              <div className={styles.taxInfo}>
+                (Base: ₹{premiumPlusPlan.basePrice} + 18% GST: ₹{premiumPlusPlan.gst})
+              </div>
+            )}
           </div>
 
           <div className={styles.divider}></div>

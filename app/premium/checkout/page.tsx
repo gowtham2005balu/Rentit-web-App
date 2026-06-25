@@ -4,6 +4,7 @@ import React, { useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '../../../components/Navbar';
 import styles from './page.module.css';
+import { plansData } from '../page';
 import { 
   ArrowLeft, 
   Info, 
@@ -26,6 +27,8 @@ function CheckoutInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planParam = searchParams.get('plan') || 'premium-plus';
+  const categoryParam = searchParams.get('category') || 'Apartment / Housing';
+  const roleParam = searchParams.get('role') || 'Seller';
   const [isProcessing, setIsProcessing] = useState(false);
   
   // File upload ref for Photoshoot
@@ -49,57 +52,45 @@ function CheckoutInner() {
   // Cart state
   const [addedAddons, setAddedAddons] = useState<{ id: string, name: string, price: number }[]>([]);
 
-  const planDetails = {
-    'basic': {
-      title: 'Basic',
-      price: 1549,
-      validity: '45 Days Validity',
-      badge: null,
-      bestValue: false,
-      features: [
-        'Increased listing visibility',
-        'Listing promotion in feed',
-        'Priority discovery'
-      ]
-    },
-    'premium': {
-      title: 'Premium',
-      price: 3549,
-      validity: '60 Days Validity',
-      badge: 'MOST POPULAR',
-      bestValue: false,
-      features: [
-        'Facebook Ads promotion',
-        'Listing Highlights',
-        'Verified Tag on Property'
-      ]
-    },
-    'premium-plus': {
-      title: 'Premium+',
-      price: 5349,
-      validity: '60 Days Validity',
-      badge: 'PREMIUM+',
-      bestValue: true,
-      features: [
-        'Facebook Ads & Google Ads',
-        'Reports & Insights dashboard',
-        'Listing Highlight badge',
-        'Rank Top in Search for 24 Hours',
-        'Verified Tag on Property'
-      ]
-    }
+  const activePlans = plansData[categoryParam]?.[roleParam] || [];
+  const selectedPlanData = activePlans.find((p: any) => p.id === planParam);
+
+  const fallbackPlan = {
+    title: 'Premium+',
+    price: 5349,
+    basePrice: 4532.20,
+    gst: 816.80,
+    validity: '60 Days Validity',
+    badge: 'PREMIUM+',
+    bestValue: true,
+    features: [
+      'Facebook Ads & Google Ads',
+      'Reports & Insights dashboard',
+      'Listing Highlight badge',
+      'Rank Top in Search for 24 Hours',
+      'Verified Tag on Property'
+    ]
   };
 
-  const currentPlan = planDetails[planParam as keyof typeof planDetails] || planDetails['premium-plus'];
+  const currentPlan = selectedPlanData ? {
+    title: selectedPlanData.name,
+    price: Number(selectedPlanData.price.replace(/,/g, '')),
+    basePrice: Number(selectedPlanData.basePrice.replace(/,/g, '')),
+    gst: Number(selectedPlanData.gst.replace(/,/g, '')),
+    validity: selectedPlanData.duration + ' Validity',
+    badge: planParam === 'premium-plus' ? 'PREMIUM+' : planParam === 'premium' ? 'MOST POPULAR' : null,
+    bestValue: planParam === 'premium-plus',
+    features: selectedPlanData.includes
+  } : fallbackPlan;
 
   // Base plan price
-  const basePrice = currentPlan.price;
+  const basePrice = currentPlan.basePrice;
   
   // Calculate totals
   const addonTotal = addedAddons.reduce((sum, item) => sum + item.price, 0);
-  const subtotal = basePrice + addonTotal;
-  const gst = Math.round(subtotal * 0.18);
-  const totalAmount = subtotal + gst;
+  const addonGst = Math.round(addonTotal * 0.18);
+  const gst = currentPlan.gst + addonGst;
+  const totalAmount = currentPlan.price + addonTotal + addonGst;
 
   const handleAddAddon = (id: string, name: string, price: number) => {
     setAddedAddons([...addedAddons, { id, name, price }]);
@@ -168,7 +159,7 @@ function CheckoutInner() {
                       <Crown size={12} fill="white" /> {currentPlan.badge}
                     </div>
                   )}
-                  <div className={styles.planTitle}>Apartment — {currentPlan.title}</div>
+                  <div className={styles.planTitle}>{categoryParam} — {currentPlan.title}</div>
                   <div className={styles.planValidity}>
                     <Timer size={14} /> {currentPlan.validity}
                   </div>

@@ -199,6 +199,13 @@
   margin-right: 2px;
 }
 
+.taxInfo {
+  font-size: 13px;
+  color: #6B7280;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
 .originalPriceWrapper {
   display: flex;
   align-items: center;
