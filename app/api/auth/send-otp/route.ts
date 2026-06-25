@@ -39,20 +39,24 @@ export async function POST(req: Request) {
     try {
       let smsSent = false;
 
+      // Sanitize API keys in case quotes were accidentally pasted in the hosting dashboard
+      const fast2smsKey = process.env.FAST2SMS_API_KEY?.replace(/["']/g, "") || "";
+      const fast2smsOtpId = process.env.FAST2SMS_OTP_ID?.replace(/["']/g, "") || "";
+
       // 1. Try Fast2SMS First
-      if (!smsSent && process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_API_KEY !== "") {
-        if (process.env.FAST2SMS_OTP_ID) {
+      if (!smsSent && fast2smsKey !== "") {
+        if (fast2smsOtpId) {
           // Use Fast2SMS specialized OTP API
           const smsResponse = await fetch('https://www.fast2sms.com/dev/otp/send', {
             method: 'POST',
             headers: {
-              'authorization': process.env.FAST2SMS_API_KEY as string,
+              'authorization': fast2smsKey,
               'Content-Type': 'application/json',
               'accept': 'application/json'
             },
             body: JSON.stringify({
               mobile: mobile,
-              otp_id: process.env.FAST2SMS_OTP_ID
+              otp_id: fast2smsOtpId
             })
           });
           const smsData = await smsResponse.json();
@@ -70,7 +74,7 @@ export async function POST(req: Request) {
           const smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
             method: 'POST',
             headers: {
-              'authorization': process.env.FAST2SMS_API_KEY as string,
+              'authorization': fast2smsKey,
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: bodyParams.toString()

@@ -50,17 +50,21 @@ export async function POST(req: Request) {
       isOtpValid = true;
     }
 
+    // Sanitize API keys in case quotes were accidentally pasted in the hosting dashboard
+    const fast2smsKey = process.env.FAST2SMS_API_KEY?.replace(/["']/g, "") || "";
+    const fast2smsOtpId = process.env.FAST2SMS_OTP_ID?.replace(/["']/g, "") || "";
+
     // Check via Fast2SMS
-    if (!isOtpValid && process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_OTP_ID) {
+    if (!isOtpValid && fast2smsKey !== "" && fast2smsOtpId !== "") {
       try {
         const response = await fetch("https://www.fast2sms.com/dev/otp/verify", {
           method: 'POST',
           headers: {
-            'authorization': process.env.FAST2SMS_API_KEY,
+            'authorization': fast2smsKey,
             'Content-Type': 'application/json',
             'accept': 'application/json'
           },
-          body: JSON.stringify({ mobile: phone, otp, otp_id: process.env.FAST2SMS_OTP_ID })
+          body: JSON.stringify({ mobile: phone, otp, otp_id: fast2smsOtpId })
         });
         const data = await response.json();
         console.log("FAST2SMS VERIFY:", data);
