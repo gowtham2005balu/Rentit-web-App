@@ -71,8 +71,8 @@ export async function POST(req: Request) {
         if (data.return === true) {
            isOtpValid = true;
         } else {
-           // Fast2SMS verification failed, throw error early
-           return NextResponse.json({ error: data.message || "Invalid OTP" }, { status: 400 });
+           // Do not throw error early! Fallback to database check because send-otp might have used a fallback provider!
+           console.log("FAST2SMS verification failed, falling back to database check");
         }
       } catch (e: any) {
         console.error("Fast2SMS Verify Error:", e);
