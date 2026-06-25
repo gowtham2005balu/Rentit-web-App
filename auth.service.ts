@@ -15,6 +15,7 @@ export class AuthService {
 
   normalizePhone(phone: string): string {
     const digits = phone.replace(/\D/g, "");
+
     // Always store 10-digit mobile numbers in DB
     return digits.slice(-10);
   }
@@ -27,58 +28,70 @@ export class AuthService {
   async sendOtp(mobile: string) {
     const phone = this.normalizePhone(mobile);
     const localNumber = this.getLocalNumber(phone);
-    
-    // Generate a 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     try {
-      if (process.env.FAST2SMS_API_KEY) {
-        // Fast2SMS uses the bulkV2 endpoint to send OTPs
+      if (process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_OTP_ID) {
         const response = await axios.post(
-          "https://www.fast2sms.com/dev/bulkV2",
+          "https://www.fast2sms.com/dev/otp/send",
           {
-            variables_values: otp,
-            route: "otp",
-            numbers: localNumber,
+            mobile: localNumber,
+            otp_id: process.env.FAST2SMS_OTP_ID,
           },
           {
             headers: {
               authorization: process.env.FAST2SMS_API_KEY,
               "Content-Type": "application/json",
+              accept: "application/json",
             },
           },
         );
 
         console.log("FAST2SMS SEND:", response.data);
 
-        if (!response.data.return) {
-          throw new UnauthorizedException("OTP send failed: " + response.data.message);
+        if (!response.data.request_id) {
+          throw new UnauthorizedException("OTP send failed");
         }
+
+        const requestId = response.data.request_id;
+
+        await this.prisma.otpSession.deleteMany({
+          where: { mobile: phone },
+        });
+
+        await this.prisma.otpSession.create({
+          data: {
+            mobile: phone,
+            sessionId: requestId,
+          },
+        });
+
+        return {
+          success: true,
+          requestId,
+        };
       } else {
-        console.log(`[Mock SMS] Sending OTP ${otp} to ${localNumber}`);
+        // Fallback for mock testing if no API key
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log(`[Mock SMS] OTP for ${localNumber} is: ${otp}`);
+        
+        await this.prisma.otpSession.deleteMany({
+          where: { mobile: phone },
+        });
+
+        await this.prisma.otpSession.create({
+          data: {
+            mobile: phone,
+            sessionId: otp,
+          },
+        });
+
+        return {
+          success: true,
+          message: "OTP sent successfully"
+        };
       }
-
-      // Clean up old sessions
-      await this.prisma.otpSession.deleteMany({
-        where: { mobile: phone },
-      });
-
-      // Save the generated OTP in the database (reusing your sessionId column to store the OTP)
-      await this.prisma.otpSession.create({
-        data: {
-          mobile: phone,
-          sessionId: otp, // Storing the generated OTP here for verification
-        },
-      });
-
-      return {
-        success: true,
-        message: "OTP sent successfully",
-        // Only return OTP in dev environment if you want to test without real SMS
-        // otp: process.env.NODE_ENV === 'development' ? otp : undefined
-      };
     } catch (e: any) {
-      console.error(e.response?.data || e.message);
+      console.log(e.response?.data || e.message);
       throw new UnauthorizedException("Failed to send OTP");
     }
   }
@@ -86,6 +99,7 @@ export class AuthService {
   // VERIFY OTP
   async verifyOtp(mobile: string, otp: string) {
     const phone = this.normalizePhone(mobile);
+    const localNumber = this.getLocalNumber(phone);
 
     const session = await this.prisma.otpSession.findFirst({
       where: { mobile: phone },
@@ -98,13 +112,36 @@ export class AuthService {
       throw new UnauthorizedException("OTP session not found");
     }
 
-    // Verify the OTP directly against our stored session record
-    if (session.sessionId !== otp) {
-      throw new UnauthorizedException("Invalid OTP");
-    }
-
     try {
-      // OTP is valid! Delete the session so it can't be reused
+      if (process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_OTP_ID) {
+        const response = await axios.post(
+          "https://www.fast2sms.com/dev/otp/verify",
+          {
+            mobile: localNumber,
+            otp,
+            otp_id: process.env.FAST2SMS_OTP_ID,
+          },
+          {
+            headers: {
+              authorization: process.env.FAST2SMS_API_KEY,
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+          },
+        );
+
+        console.log("FAST2SMS VERIFY:", response.data);
+
+        if (response.data.return !== true) {
+          throw new UnauthorizedException(response.data.message || "Invalid OTP");
+        }
+      } else {
+        // Mock verification
+        if (session.sessionId !== otp) {
+           throw new UnauthorizedException("Invalid OTP");
+        }
+      }
+
       await this.prisma.otpSession.deleteMany({
         where: {
           mobile: phone,
@@ -136,7 +173,7 @@ export class AuthService {
         user,
       };
     } catch (e: any) {
-      console.error(e.response?.data || e.message);
+      console.log(e.response?.data || e.message);
       throw new UnauthorizedException("OTP verification failed");
     }
   }

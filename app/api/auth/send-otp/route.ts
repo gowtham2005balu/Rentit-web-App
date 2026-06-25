@@ -52,22 +52,44 @@ export async function POST(req: Request) {
       } 
       
       if (!smsSent && process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_API_KEY !== "") {
-        const bodyParams = new URLSearchParams({
-          variables_values: otp,
-          route: 'otp',
-          numbers: mobile
-        });
-        const smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
-          method: 'POST',
-          headers: {
-            'authorization': process.env.FAST2SMS_API_KEY as string,
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: bodyParams.toString()
-        });
-        const smsData = await smsResponse.json();
-        console.log(`[Real SMS] Fast2SMS Response:`, smsData);
-        if (smsData.return === true) smsSent = true;
+        if (process.env.FAST2SMS_OTP_ID) {
+          // Use Fast2SMS specialized OTP API
+          const smsResponse = await fetch('https://www.fast2sms.com/dev/otp/send', {
+            method: 'POST',
+            headers: {
+              'authorization': process.env.FAST2SMS_API_KEY as string,
+              'Content-Type': 'application/json',
+              'accept': 'application/json'
+            },
+            body: JSON.stringify({
+              mobile: mobile,
+              otp_id: process.env.FAST2SMS_OTP_ID
+            })
+          });
+          const smsData = await smsResponse.json();
+          console.log(`[Real SMS] Fast2SMS OTP Send Response:`, smsData);
+          if (smsData.request_id || smsData.message === 'OTP Sent Successfully' || smsData.return === true) {
+             smsSent = true;
+          }
+        } else {
+          // Fallback to bulkV2 if no OTP_ID
+          const bodyParams = new URLSearchParams();
+          bodyParams.append('route', 'otp');
+          bodyParams.append('variables_values', otp);
+          bodyParams.append('numbers', mobile);
+          
+          const smsResponse = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+            method: 'POST',
+            headers: {
+              'authorization': process.env.FAST2SMS_API_KEY as string,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: bodyParams.toString()
+          });
+          const smsData = await smsResponse.json();
+          console.log(`[Real SMS] Fast2SMS bulkV2 Response:`, smsData);
+          if (smsData.return === true) smsSent = true;
+        }
       }
 
       if (!smsSent && process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {

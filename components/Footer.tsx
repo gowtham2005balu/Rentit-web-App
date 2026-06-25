@@ -69,20 +69,22 @@ export default function Footer() {
             </p>
             
             <div className={styles.socialRow}>
-              <div className={styles.socialIcon} aria-label="RentIt on Twitter"><TwitterIcon size={16} /></div>
-              <div className={styles.socialIcon} aria-label="RentIt on Facebook"><FacebookIcon size={16} /></div>
-              <div className={styles.socialIcon} aria-label="RentIt on LinkedIn"><LinkedinIcon size={16} /></div>
-              <div className={styles.socialIcon} aria-label="RentIt on Instagram"><InstagramIcon size={16} /></div>
+              <a href="https://x.com/myrent_itapp" target="_blank" rel="noopener noreferrer" className={styles.socialIcon} aria-label="RentIt on Twitter">
+                <TwitterIcon size={16} />
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61590289396258" target="_blank" rel="noopener noreferrer" className={styles.socialIcon} aria-label="RentIt on Facebook">
+                <FacebookIcon size={16} />
+              </a>
+              <a href="https://www.linkedin.com/company/rentit-app/" target="_blank" rel="noopener noreferrer" className={styles.socialIcon} aria-label="RentIt on LinkedIn">
+                <LinkedinIcon size={16} />
+              </a>
+              <a href="https://www.instagram.com/rent_itapp?igsh=YmNrb2R1MzJna255&utm_source=qr" target="_blank" rel="noopener noreferrer" className={styles.socialIcon} aria-label="RentIt on Instagram">
+                <InstagramIcon size={16} />
+              </a>
             </div>
             
             <div className={styles.appButtons}>
-              <a href="https://play.google.com/store/apps/details?id=com.zuntra.rentit" target="_blank" rel="noopener noreferrer" className={styles.appBtn} aria-label="Download RentIt app on Apple App Store">
-                <Smartphone size={18} color="#E5E7EB" />
-                <div className={styles.appBtnText}>
-                  <span className={styles.appBtnSub}>Download on the</span>
-                  <span className={styles.appBtnTitle}>App Store</span>
-                </div>
-              </a>
+
               <a href="https://play.google.com/store/apps/details?id=com.zuntra.rentit" target="_blank" rel="noopener noreferrer" className={styles.appBtn} aria-label="Download RentIt app on Google Play Store">
                 <Play size={16} color="#E5E7EB" fill="#E5E7EB" />
                 <div className={styles.appBtnText}>

@@ -60,8 +60,16 @@ export async function POST(req: Request) {
           body: JSON.stringify({ mobile: phone, otp, otp_id: process.env.FAST2SMS_OTP_ID })
         });
         const data = await response.json();
-        if (data.return === true) isOtpValid = true;
-      } catch (e) { /* ignore */ }
+        console.log("FAST2SMS VERIFY:", data);
+        if (data.return === true) {
+           isOtpValid = true;
+        } else {
+           // Fast2SMS verification failed, throw error early
+           return NextResponse.json({ error: data.message || "Invalid OTP" }, { status: 400 });
+        }
+      } catch (e: any) {
+        console.error("Fast2SMS Verify Error:", e);
+      }
     }
     
     // Check against DB-stored OTP
