@@ -564,6 +564,29 @@
   color: #1f2937;
 }
 
+.resendActionBtn {
+  background: none;
+  border: none;
+  color: #2c4257;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.resendActionBtn:hover {
+  color: #f59e0b;
+}
+
+.resendActionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .actionButtonsRow {
   display: flex;
   gap: 16px;

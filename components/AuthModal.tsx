@@ -14,7 +14,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const { login } = useAuth();
 
   const [step, setStep] = useState<'MOBILE' | 'OTP' | 'PROFILE' | 'WELCOME'>('MOBILE');
-  const [userProfile, setUserProfile] = useState<{name?: string, city?: string, createdAt?: string}>({});
+  const [userProfile, setUserProfile] = useState<{ name?: string, city?: string, createdAt?: string }>({});
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
@@ -238,7 +238,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
       login(tempUserId);
       setStep('WELCOME');
-      
+
       // Reset state for next time
       setOtp(['', '', '', '', '', '']);
       setMobile('');
@@ -256,14 +256,14 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   if (step === 'WELCOME') {
     const initials = userProfile.name ? userProfile.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U';
     const dateStr = userProfile.createdAt ? new Date(userProfile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'recently';
-    
+
     return (
       <div className={styles.modalOverlay} onClick={(e) => { if (e.target === e.currentTarget) { onClose(); setStep('MOBILE'); } }}>
         <div className={styles.welcomeModalContent}>
           <div className={styles.welcomeCheckCircle}>
             <Check size={40} strokeWidth={3} />
           </div>
-          
+
           <div className={styles.welcomeProfileBadge}>
             <div className={styles.welcomeAvatar}>{initials}</div>
             <div className={styles.welcomeUserInfo}>
@@ -275,11 +275,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
           </div>
-          
+
           <div className={styles.welcomeMessage}>
             You're all set! Let's find your next perfect property. We've got <span className={styles.welcomeBoldText}>127 new listings</span> since your last visit.
           </div>
-          
+
           <div className={styles.welcomeGrid}>
             <div className={styles.welcomeGridCard}>
               <div className={`${styles.welcomeGridIcon} ${styles.iconApt}`}>🏢</div>
@@ -289,7 +289,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               </div>
               <ChevronDown className={styles.welcomeGridArrow} style={{ transform: 'rotate(-90deg)' }} size={16} />
             </div>
-            
+
             <div className={styles.welcomeGridCard}>
               <div className={`${styles.welcomeGridIcon} ${styles.iconPg}`}>🛏️</div>
               <div className={styles.welcomeGridText}>
@@ -317,7 +317,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <ChevronDown className={styles.welcomeGridArrow} style={{ transform: 'rotate(-90deg)' }} size={16} />
             </div>
           </div>
-          
+
           <button className={styles.lookOutBtn} onClick={() => { onClose(); setStep('MOBILE'); }}>
             Look out properties
           </button>
@@ -425,20 +425,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             )}
           </div>
 
-          <div className={styles.statsSection}>
-            <div className={styles.statBox}>
-              <span className={styles.statValue}>50K+</span>
-              <span className={styles.statLabel}>Happy Users</span>
-            </div>
-            <div className={styles.statBox}>
-              <span className={styles.statValue}>10K+</span>
-              <span className={styles.statLabel}>Active Listings</span>
-            </div>
-            <div className={styles.statBox}>
-              <span className={styles.statValue}>₹0</span>
-              <span className={styles.statLabel}>Brokerage</span>
-            </div>
-          </div>
         </div>
 
         {/* Right Panel */}
@@ -498,7 +484,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <div className={`${styles.sectionLabel} ${styles.sectionLabelRequired}`}>Mobile Number</div>
               <div className={styles.mobileInputGroup}>
                 <div className={styles.countryCode}>
-                  <span className={styles.flag}>🇮🇳</span>
                   <span>+91</span>
                   <ChevronDown size={14} color="#9ca3af" style={{ marginLeft: '4px' }} />
                 </div>
@@ -517,8 +502,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <button type="submit" className={styles.continueBtn} disabled={isLoading || mobile.length < 10}>
                 {isLoading ? <Loader2 size={18} className="animate-spin" /> : (
                   <>
-                    <ArrowRight size={18} />
                     Continue
+                    <ArrowRight size={18} />
                   </>
                 )}
               </button>
@@ -592,21 +577,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   </button>
 
                   <div className={styles.resendRow}>
-                    <span>Resend OTP in</span>
-                    <span className={styles.resendTimer}>00:{timer < 10 ? `0${timer}` : timer}</span>
-                  </div>
-
-                  <div className={styles.actionButtonsRow}>
-                    <button 
-                      type="button" 
-                      className={styles.actionBtn}
-                      onClick={sendOtpRequest}
-                      disabled={!isOtpExpired && timer > 0}
-                      style={{ opacity: (!isOtpExpired && timer > 0) ? 0.5 : 1, cursor: (!isOtpExpired && timer > 0) ? 'not-allowed' : 'pointer' }}
-                    >
-                      <RefreshCcw size={16} />
-                      Resend OTP
-                    </button>
+                    {timer > 0 ? (
+                      <>
+                        <span>Resend OTP in</span>
+                        <span className={styles.resendTimer}>00:{timer < 10 ? `0${timer}` : timer}</span>
+                      </>
+                    ) : (
+                      <button 
+                        type="button" 
+                        onClick={sendOtpRequest} 
+                        className={styles.resendActionBtn}
+                        disabled={isLoading}
+                      >
+                        <RefreshCcw size={14} style={{ marginRight: '6px' }} />
+                        Resend OTP
+                      </button>
+                    )}
                   </div>
                 </>
               )}
@@ -614,36 +600,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             </form>
           )}
 
-          {step === 'MOBILE' && (
-            <>
-              <div className={styles.divider}></div>
 
-              <div className={styles.trendingSection}>
-                <div className={styles.trendingHeader}>
-                  <TrendingUp size={14} className={styles.trendingIcon} />
-                  TRENDING SEARCHES
-                </div>
-                <div className={styles.trendingTags}>
-                  <span className={styles.trendingTag}>
-                    <Search size={12} className={styles.tagSearchIcon} />
-                    2 BHK in Velachery
-                  </span>
-                  <span className={styles.trendingTag}>
-                    <Search size={12} className={styles.tagSearchIcon} />
-                    Girls PG in T Nagar
-                  </span>
-                  <span className={styles.trendingTag}>
-                    <Search size={12} className={styles.tagSearchIcon} />
-                    Office Space in OMR
-                  </span>
-                  <span className={styles.trendingTag}>
-                    <Search size={12} className={styles.tagSearchIcon} />
-                    Flatmate near Anna Nagar
-                  </span>
-                </div>
-              </div>
-            </>
-          )}
 
           <div className={styles.footer}>
             By continuing, you agree to our <a href="/terms-of-service" className={styles.footerLink}>Terms of Service</a> and <a href="/privacy-policy" className={styles.footerLink}>Privacy Policy</a>. Your data is secured and never shared.

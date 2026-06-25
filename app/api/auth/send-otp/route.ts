@@ -39,21 +39,7 @@ export async function POST(req: Request) {
     try {
       let smsSent = false;
 
-      if (process.env.API_KEY && process.env.API_KEY.includes('-')) {
-        const url = `https://2factor.in/API/V1/${process.env.API_KEY}/SMS/${mobile}/${otp}`;
-        const response = await fetch(url, { method: 'GET' });
-        const text = await response.text();
-        try {
-          const data = JSON.parse(text);
-          console.log(`[Real SMS] 2Factor Response:`, data);
-          if (data.Status !== 'Error') {
-            smsSent = true;
-          }
-        } catch (e) {
-           console.log(`[Real SMS] 2Factor Non-JSON:`, text);
-        }
-      } 
-      
+      // 1. Try Fast2SMS First
       if (!smsSent && process.env.FAST2SMS_API_KEY && process.env.FAST2SMS_API_KEY !== "") {
         if (process.env.FAST2SMS_OTP_ID) {
           // Use Fast2SMS specialized OTP API
@@ -95,6 +81,23 @@ export async function POST(req: Request) {
         }
       }
 
+      // 2. Try 2Factor.in as fallback
+      if (!smsSent && process.env.API_KEY && process.env.API_KEY.includes('-')) {
+        const url = `https://2factor.in/API/V1/${process.env.API_KEY}/SMS/${mobile}/${otp}`;
+        const response = await fetch(url, { method: 'GET' });
+        const text = await response.text();
+        try {
+          const data = JSON.parse(text);
+          console.log(`[Real SMS] 2Factor Response:`, data);
+          if (data.Status !== 'Error') {
+            smsSent = true;
+          }
+        } catch (e) {
+           console.log(`[Real SMS] 2Factor Non-JSON:`, text);
+        }
+      } 
+
+      // 3. Try Twilio as final fallback
       if (!smsSent && process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
         const twilioSid = process.env.TWILIO_ACCOUNT_SID;
         const twilioAuth = process.env.TWILIO_AUTH_TOKEN;

@@ -74,6 +74,8 @@ export async function POST(req: Request) {
         console.error("Fast2SMS Verify Error:", e);
       }
     }
+
+
     
     // Check against DB-stored OTP
     if (!isOtpValid && user && user.otp === otp) {
