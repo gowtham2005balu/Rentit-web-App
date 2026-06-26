@@ -50,8 +50,8 @@ const resourcesLinks = [
 ];
 
 const legalLinks = [
-  { name: 'Privacy Policy', href: '/privacy-policy' },
-  { name: 'Terms of Service', href: '/terms-of-service' },
+  { name: 'Privacy Policy', href: "https://apps-zuntra.github.io/rentit-privacypolicy/index.html" },
+  { name: 'Terms of Service', href: "https://apps-zuntra.github.io/rentit-privacypolicy/index.html" },
   { name: 'Cookie Policy', href: '/cookie-policy' }
 ];
 
