@@ -140,7 +140,7 @@ export default function Footer() {
             © 2026 Rentit Technologies Pvt. Ltd. - Find Spaces. Faster.
           </div>
           <div className={styles.bottomLinks}>
-            <a href="https://apps-zuntra.github.io/rentit-privacypolicy/index.html className={styles.bottomLinkItem}">Privacy</a>
+            <a href="https://apps-zuntra.github.io/rentit-privacypolicy/index.html" className={styles.bottomLinkItem}>Privacy</a>
             <a href="https://apps-zuntra.github.io/rentit-privacypolicy" className={styles.bottomLinkItem}>Terms</a>
             <a href="/cookie-policy" className={styles.bottomLinkItem}>Cookies</a>
           </div>
