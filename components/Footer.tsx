@@ -50,8 +50,8 @@ const resourcesLinks = [
 ];
 
 const legalLinks = [
-  { name: 'Privacy Policy', href: '/privacy-policy' },
-  { name: 'Terms of Service', href: '/terms-of-service' },
+  { name: 'Privacy Policy', href: "https://apps-zuntra.github.io/rentit-privacypolicy/index.html" },
+  { name: 'Terms of Service', href: "https://apps-zuntra.github.io/rentit-privacypolicy" },
   { name: 'Cookie Policy', href: '/cookie-policy' }
 ];
 
@@ -140,8 +140,8 @@ export default function Footer() {
             © 2026 Rentit Technologies Pvt. Ltd. - Find Spaces. Faster.
           </div>
           <div className={styles.bottomLinks}>
-            <a href="/privacy-policy" className={styles.bottomLinkItem}>Privacy</a>
-            <a href="/terms-of-service" className={styles.bottomLinkItem}>Terms</a>
+            <a href="https://apps-zuntra.github.io/rentit-privacypolicy/index.html" className={styles.bottomLinkItem}>Privacy</a>
+            <a href="https://apps-zuntra.github.io/rentit-privacypolicy" className={styles.bottomLinkItem}>Terms</a>
             <a href="/cookie-policy" className={styles.bottomLinkItem}>Cookies</a>
           </div>
         </div>
