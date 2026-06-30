@@ -16,7 +16,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
   rawProp = await fetchPropertyById(id);
 
   const allRows = await fetchAllProperties();
-  allProperties = allRows.filter((r: any) => 
+  allProperties = allRows.filter((r: any) =>
     (r.type || '').toLowerCase().includes('pg') || (r.propertyType || '').toLowerCase().includes('pg')
   );
   if (!rawProp && allRows.length > 0) {
@@ -24,48 +24,60 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
   }
 
   const details = rawProp && typeof rawProp.details === 'string' ? JSON.parse(rawProp.details) : (rawProp?.details || {});
-  
+
   const p = {
-    title: rawProp?.title || details.title || 'Premium Co-living PG',
-    location: rawProp?.location_address || details.location_address || details.fullAddress || details.locality || rawProp?.location || 'Chennai',
-    price: rawProp?.price || details.price || 12000,
-    deposit: rawProp?.deposit || details.securityDeposit || (rawProp?.price ? Number(rawProp.price) * 3 : 36000),
-    description: rawProp?.description || details.propertyDescription || "Nested on the 5th floor of Asset Doctors Apartment in the prime locality of Kasturba Nagar, Adyar, this fully furnished 3BHK offers a premium living experience in Chennai's most sought-after residential neighborhood. The apartment features Italian marble flooring throughout, a large modular kitchen with premium appliances, and three spacious bedrooms with attached bathrooms. Large bay windows flood the interiors with natural light and offer uninterrupted views of the skyline of Adyar. The building comes with round-the-clock security, a fully equipped gymnasium, swimming pool, and dedicated covered parking for two vehicles.",
-    tenantPref: rawProp?.tenant_pref || rawProp?.tenantPref || (details.preferredTenants ? details.preferredTenants.join(', ') : 'Family'),
+    title: rawProp?.propertyName || rawProp?.title || details.pgName || details.title || 'Premium Co-living PG',
+    location: rawProp?.location_address || details.fullAddress || details.locality || rawProp?.location || 'Chennai',
+    price: rawProp?.rent || rawProp?.price || details.expectedRent || 12000,
+    deposit: rawProp?.deposit || details.expectedDeposit || (rawProp?.price ? Number(rawProp.price) * 3 : 36000),
+    description: rawProp?.propertyDescription || rawProp?.description || details.description || "Nested on the 5th floor of Asset Doctors Apartment in the prime locality of Kasturba Nagar, Adyar, this fully furnished 3BHK offers a premium living experience in Chennai's most sought-after residential neighborhood.",
+    tenantPref: details.availableFor || rawProp?.tenantPref || 'Male / Female',
     sqft: rawProp?.sqft || details.builtUpArea || '1500 sq.ft',
     age: rawProp?.property_age || details.propertyAge || '1-5 Years',
     facing: rawProp?.facing || details.facing || 'East',
     bhk: rawProp?.bhk || details.bhkType || '3 BHK',
-    furnishing: rawProp?.furnishing || details.furnishingType || 'Semi Furnished',
+    furnishing: rawProp?.furnishing || details.furnishingType || 'Fully Furnished',
     parking: rawProp?.parking || details.parking || 'Car & Bike',
     baths: rawProp?.baths || details.bathrooms || 2,
     balcony: rawProp?.balcony || details.balconies || '1 Balcony',
     waterSupply: rawProp?.water_supply || details.waterSupply || 'Corporation',
-    foodIncluded: rawProp?.food_included || details.foodIncluded ? 'Yes' : 'No',
+    foodIncluded: details.foodIncluded !== undefined ? (details.foodIncluded ? 'Yes' : 'No') : 'Yes',
     postedOn: rawProp?.created_at ? new Date(rawProp.created_at).toLocaleDateString('en-GB') : '22 Apr 2026',
     availableFrom: details.availableFrom || 'Immediately',
-    amenities: rawProp?.amenities || details.selectedAmenities || ['Gas', 'CCTV', 'Lift', 'AC', 'House Keeper', 'Club House', 'Shopping Center', 'Power Backup', 'Gym', 'Swimming Pool', '24/7 Security', 'High-speed WiFi']
+    amenities: rawProp?.amenities || details.amenities || ['Gas', 'CCTV', 'Lift', 'AC', 'House Keeper', 'Power Backup', 'Gym', 'Swimming Pool', '24/7 Security', 'High-speed WiFi']
   };
 
-  // Mock image URLs matching the design structure
-  const images = [
-    rawProp?.image_url || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800'
-  ];
+  const images = (() => {
+    let urls: string[] = [];
+    if (Array.isArray(rawProp?.images) && rawProp.images.length > 0) urls = rawProp.images;
+    else if (details?.images && Array.isArray(details.images) && details.images.length > 0) urls = details.images;
+    else if (rawProp?.image_url) urls = [rawProp.image_url];
+
+    const fallbacks = [
+      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800'
+    ];
+
+    const finalUrls = [...urls];
+    for (let i = finalUrls.length; i < 5; i++) {
+      finalUrls.push(fallbacks[i % 5]);
+    }
+    return finalUrls;
+  })();
 
   return (
     <div className={styles.page}>
       <Navbar />
-      
+
       <main className={styles.mainWrapper}>
         <div className={styles.layout}>
-          
+
           {/* Left Sidebar */}
           <aside className={styles.leftSidebar}>
-            
+
             {/* Early Access Widget */}
             <div className={styles.earlyAccessWidget}>
               <span className={styles.earlyAccessTag}>
@@ -81,7 +93,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 <Award size={14} /> Go Premium
               </button>
             </div>
-            
+
             {/* Similar Apartments */}
             <div className={styles.widgetCard}>
               <h4 className={styles.cardHeader}>SIMILAR PGS</h4>
@@ -100,14 +112,14 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 ))}
               </div>
             </div>
-            
+
             {/* Prime Widget */}
             <div className={styles.primeWidget}>
               <div className={styles.primeHeader}>
                 <span className={styles.primeLogo}>PRIME</span>
                 <span className={styles.sponsoredBadge}>Sponsored</span>
               </div>
-              <div style={{fontSize: '10px', color: '#9CA3AF', marginBottom: '8px', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600}}>AMAZON PRIME VIDEO</div>
+              <div style={{ fontSize: '10px', color: '#9CA3AF', marginBottom: '8px', letterSpacing: '0.5px', textTransform: 'uppercase', fontWeight: 600 }}>AMAZON PRIME VIDEO</div>
               <h3 className={styles.primeTitle}>
                 Start streaming 10,000+ movies this weekend
               </h3>
@@ -122,7 +134,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
             {/* Location Insights */}
             <div className={styles.widgetCard}>
               <h4 className={styles.cardHeader}>LOCATION INSIGHTS</h4>
-              
+
               <div className={styles.locationStatsGrid}>
                 <div className={styles.statBox}>
                   <span className={styles.statValue}>420m</span>
@@ -139,7 +151,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                   </div>
                 </div>
               </div>
-              
+
               <div className={styles.insightsList}>
                 <div className={styles.insightRow}>
                   <span className={styles.insightLabel}>Traffic Score</span>
@@ -197,12 +209,12 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 <Truck size={14} /> Get Quote
               </button>
             </div>
-            
+
           </aside>
-          
+
           {/* Main Content */}
           <div className={styles.mainContent}>
-            
+
             {/* Breadcrumbs */}
             <div className={styles.breadcrumbs}>
               <Link href="/">Home</Link>
@@ -215,10 +227,10 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
               <ChevronRight size={14} className={styles.breadcrumbIcon} />
               <span className={styles.breadcrumbActive}>{p.title}</span>
             </div>
-            
+
             {/* Photo Gallery Grid */}
             <div className={styles.galleryGrid}>
-              
+
               {/* Left Column (2 large images) */}
               <div className={styles.leftColumn}>
                 <div className={styles.imageWrapper}>
@@ -232,7 +244,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                   </button>
                 </div>
               </div>
-              
+
               {/* Right Column (3 smaller images) */}
               <div className={styles.rightColumn}>
                 <div className={styles.imageWrapper}>
@@ -251,9 +263,9 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                   </div>
                 </div>
               </div>
-              
+
             </div>
-            
+
             {/* Title Section */}
             <div className={styles.titleSection}>
               <h1 className={styles.propTitle}>{p.title}</h1>
@@ -274,6 +286,56 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                   <RotateCcw size={16} />
                   <span>Updated today</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Room sharing cards row */}
+            <div className={styles.sectionContainer} style={{ padding: '24px', borderRadius: '16px', border: '1px solid #e5e7eb', marginTop: '0px', marginBottom: '24px', backgroundColor: 'white' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                {details.selectedRooms && details.selectedRooms.length > 0 ? (
+                  details.selectedRooms.map((roomType: string, idx: number) => {
+                    let rentVal = Number(p.price);
+                    if (roomType.includes('Single')) rentVal = Math.round(rentVal * 1.5);
+                    else if (roomType.includes('Triple')) rentVal = Math.round(rentVal * 0.85);
+                    else if (roomType.includes('Four')) rentVal = Math.round(rentVal * 0.7);
+
+                    const depVal = rentVal * 2;
+
+                    return (
+                      <div key={idx} style={{ padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+                        <div style={{ fontSize: '11px', fontWeight: '700', color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '12px' }}>{roomType}</div>
+                        <div style={{ fontSize: '24px', fontWeight: '800', color: '#1E293B', marginBottom: '6px' }}>
+                          ₹{rentVal.toLocaleString('en-IN')}<span style={{ fontSize: '13px', fontWeight: '400', color: '#64748B' }}>/month</span>
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#64748B', fontWeight: '500' }}>Deposit ₹{depVal.toLocaleString('en-IN')}</div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div style={{ padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+                      <div style={{ fontSize: '11px', fontWeight: '700', color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '12px' }}>TRIPLE SHARING ROOM</div>
+                      <div style={{ fontSize: '24px', fontWeight: '800', color: '#1E293B', marginBottom: '6px' }}>
+                        ₹7,000<span style={{ fontSize: '13px', fontWeight: '400', color: '#64748B' }}>/month</span>
+                      </div>
+                      <div style={{ fontSize: '13px', color: '#64748B', fontWeight: '500' }}>Deposit ₹14,000</div>
+                    </div>
+                    <div style={{ padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+                      <div style={{ fontSize: '11px', fontWeight: '700', color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '12px' }}>TWO SHARING ROOM</div>
+                      <div style={{ fontSize: '24px', fontWeight: '800', color: '#1E293B', marginBottom: '6px' }}>
+                        ₹8,000<span style={{ fontSize: '13px', fontWeight: '400', color: '#64748B' }}>/month</span>
+                      </div>
+                      <div style={{ fontSize: '13px', color: '#64748B', fontWeight: '500' }}>Deposit ₹16,000</div>
+                    </div>
+                    <div style={{ padding: '20px', borderRadius: '12px', border: '1px solid #e5e7eb', backgroundColor: 'white' }}>
+                      <div style={{ fontSize: '11px', fontWeight: '700', color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '12px' }}>SINGLE ROOM</div>
+                      <div style={{ fontSize: '24px', fontWeight: '800', color: '#1E293B', marginBottom: '6px' }}>
+                        ₹12,000<span style={{ fontSize: '13px', fontWeight: '400', color: '#64748B' }}>/month</span>
+                      </div>
+                      <div style={{ fontSize: '13px', color: '#64748B', fontWeight: '500' }}>Deposit ₹24,000</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -402,107 +464,151 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 <h2 className={styles.sectionTitle}>Room Configurations</h2>
               </div>
               <div className={styles.roomConfigList}>
-                {/* 3 Sharing */}
-                <div className={styles.roomConfigCard}>
-                  <div className={styles.rcHeader}>
-                    <div className={styles.rcTitle}>Three Sharing Room</div>
-                  </div>
-                  <div className={styles.rcPriceRow}>
-                    <div className={styles.rcPrice}>₹7,000<span className={styles.rcPerMonth}>/month</span></div>
-                    <div className={styles.rcDeposit}>Deposit ₹14,000</div>
-                  </div>
-                  <div className={styles.rcAmenities}>
-                    <div className={styles.rcAmenity}>
-                      <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>Cupboard</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>AC</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>Att. Bath</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>TV</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>WiFi</span>
-                    </div>
-                  </div>
-                </div>
+                {details.selectedRooms && details.selectedRooms.length > 0 ? (
+                  details.selectedRooms.map((roomType: string, idx: number) => {
+                    let rentVal = Number(p.price);
+                    if (roomType.includes('Single')) rentVal = Math.round(rentVal * 1.5);
+                    else if (roomType.includes('Triple')) rentVal = Math.round(rentVal * 0.85);
+                    else if (roomType.includes('Four')) rentVal = Math.round(rentVal * 0.7);
 
-                {/* 2 Sharing */}
-                <div className={styles.roomConfigCard}>
-                  <div className={styles.rcHeader}>
-                    <div className={styles.rcTitle}>Two Sharing Room</div>
-                  </div>
-                  <div className={styles.rcPriceRow}>
-                    <div className={styles.rcPrice}>₹8,000<span className={styles.rcPerMonth}>/month</span></div>
-                    <div className={styles.rcDeposit}>Deposit ₹16,000</div>
-                  </div>
-                  <div className={styles.rcAmenities}>
-                    <div className={styles.rcAmenity}>
-                      <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>Cupboard</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>AC</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>Att. Bath</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>TV</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>WiFi</span>
-                    </div>
-                  </div>
-                </div>
+                    const depVal = rentVal * 2;
 
-                {/* Single Room */}
-                <div className={styles.roomConfigCard}>
-                  <div className={styles.rcHeader}>
-                    <div className={styles.rcTitle}>Single Room</div>
-                  </div>
-                  <div className={styles.rcPriceRow}>
-                    <div className={styles.rcPrice}>₹12,000<span className={styles.rcPerMonth}>/month</span></div>
-                    <div className={styles.rcDeposit}>Deposit ₹24,000</div>
-                  </div>
-                  <div className={styles.rcAmenities}>
-                    <div className={styles.rcAmenity}>
-                      <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>Cupboard</span>
+                    return (
+                      <div key={idx} className={styles.roomConfigCard}>
+                        <div className={styles.rcHeader}>
+                          <div className={styles.rcTitle}>{roomType}</div>
+                        </div>
+                        <div className={styles.rcPriceRow}>
+                          <div className={styles.rcPrice}>₹{rentVal.toLocaleString('en-IN')}<span className={styles.rcPerMonth}>/month</span></div>
+                          <div className={styles.rcDeposit}>Deposit ₹{depVal.toLocaleString('en-IN')}</div>
+                        </div>
+                        <div className={styles.rcAmenities}>
+                          <div className={styles.rcAmenity}>
+                            <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                            <span className={styles.rcAmenityLabel}>Cupboard</span>
+                          </div>
+                          <div className={styles.rcAmenity}>
+                            <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                            <span className={styles.rcAmenityLabel}>AC</span>
+                          </div>
+                          <div className={styles.rcAmenity}>
+                            <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                            <span className={styles.rcAmenityLabel}>Att. Bath</span>
+                          </div>
+                          <div className={styles.rcAmenity}>
+                            <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                            <span className={styles.rcAmenityLabel}>TV</span>
+                          </div>
+                          <div className={styles.rcAmenity}>
+                            <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                            <span className={styles.rcAmenityLabel}>WiFi</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    {/* Fallback to original hardcoded ones if no selected rooms found in payload */}
+                    <div className={styles.roomConfigCard}>
+                      <div className={styles.rcHeader}>
+                        <div className={styles.rcTitle}>Three Sharing Room</div>
+                      </div>
+                      <div className={styles.rcPriceRow}>
+                        <div className={styles.rcPrice}>₹7,000<span className={styles.rcPerMonth}>/month</span></div>
+                        <div className={styles.rcDeposit}>Deposit ₹14,000</div>
+                      </div>
+                      <div className={styles.rcAmenities}>
+                        <div className={styles.rcAmenity}>
+                          <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>Cupboard</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>AC</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>Att. Bath</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>TV</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>WiFi</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.rcAmenity}>
-                      <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>AC</span>
+
+                    <div className={styles.roomConfigCard}>
+                      <div className={styles.rcHeader}>
+                        <div className={styles.rcTitle}>Two Sharing Room</div>
+                      </div>
+                      <div className={styles.rcPriceRow}>
+                        <div className={styles.rcPrice}>₹8,000<span className={styles.rcPerMonth}>/month</span></div>
+                        <div className={styles.rcDeposit}>Deposit ₹16,000</div>
+                      </div>
+                      <div className={styles.rcAmenities}>
+                        <div className={styles.rcAmenity}>
+                          <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>Cupboard</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>AC</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>Att. Bath</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>TV</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>WiFi</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.rcAmenity}>
-                      <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>Att. Bath</span>
+
+                    <div className={styles.roomConfigCard}>
+                      <div className={styles.rcHeader}>
+                        <div className={styles.rcTitle}>Single Room</div>
+                      </div>
+                      <div className={styles.rcPriceRow}>
+                        <div className={styles.rcPrice}>₹12,000<span className={styles.rcPerMonth}>/month</span></div>
+                        <div className={styles.rcDeposit}>Deposit ₹24,000</div>
+                      </div>
+                      <div className={styles.rcAmenities}>
+                        <div className={styles.rcAmenity}>
+                          <Shirt size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>Cupboard</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Snowflake size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>AC</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Bath size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>Att. Bath</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>TV</span>
+                        </div>
+                        <div className={styles.rcAmenity}>
+                          <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
+                          <span className={styles.rcAmenityLabel}>WiFi</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.rcAmenity}>
-                      <Tv size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>TV</span>
-                    </div>
-                    <div className={styles.rcAmenity}>
-                      <Wifi size={20} strokeWidth={1.5} className={styles.rcAmenityIcon} />
-                      <span className={styles.rcAmenityLabel}>WiFi</span>
-                    </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </div>
             </div>
-
             {/* Amenities */}
             <div className={styles.sectionContainer}>
               <div className={styles.sectionHeader}>
@@ -583,13 +689,13 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 </div>
               </div>
               <div className={styles.mapContainer}>
-                <iframe 
-                  src="https://maps.google.com/maps?q=Adyar,%20Chennai&t=&z=14&ie=UTF8&iwloc=&output=embed" 
-                  width="100%" 
-                  height="100%" 
-                  style={{ border: 0, borderRadius: '14px' }} 
-                  allowFullScreen 
-                  loading="lazy" 
+                <iframe
+                  src="https://maps.google.com/maps?q=Adyar,%20Chennai&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, borderRadius: '14px' }}
+                  allowFullScreen
+                  loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="Location Map"
                 ></iframe>
@@ -602,7 +708,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 <h2 className={styles.sectionTitle}>Similar Properties</h2>
                 <Link href="/" className={styles.seeAllLink}>See all <ChevronRight size={14} /></Link>
               </div>
-              
+
               <div className={styles.simPropRow}>
                 {allProperties.slice(0, 10).map((prop, idx) => (
                   <div key={idx} className={styles.simPropCard}>
@@ -619,40 +725,66 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
             </div>
 
           </div>
-          
+
           {/* Right Sidebar */}
           <aside className={styles.rightSidebar}>
-            
-            {/* Main Rent Card */}
-            <div className={styles.widgetCard} style={{ padding: '24px' }}>
-              <div className={styles.rentLabel}>MONTHLY RENT</div>
+
+            {/* Main Rent Card - Starting From */}
+            <div className={styles.widgetCard} style={{ padding: '24px', marginBottom: '16px' }}>
+              <div className={styles.rentLabel}>STARTING FROM</div>
               <div className={styles.rentPrice}>
                 ₹ {Number(p.price).toLocaleString('en-IN')}<span className={styles.rentPeriod}>/month</span>
               </div>
-              
-              <div className={styles.financialGrid}>
-                <div className={styles.finBox}>
-                  <span className={styles.finLabel}>Deposit</span>
-                  <span className={styles.finValue}>₹{Number(p.deposit).toLocaleString('en-IN')}</span>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', borderBottom: '1px solid #F1F5F9', paddingBottom: '8px' }}>
+                  <span style={{ color: '#64748B', fontWeight: '500' }}>Security Deposit</span>
+                  <span style={{ fontWeight: '700', color: '#1E293B' }}>₹{Number(p.deposit).toLocaleString('en-IN')}</span>
                 </div>
-                <div className={styles.finBox}>
-                  <span className={styles.finLabel}>Maintenance</span>
-                  <span className={styles.finValue}>₹1,000/mo</span>
-                </div>
-                <div className={styles.finBox}>
-                  <span className={styles.finLabel}>Brokerage</span>
-                  <span className={`${styles.finValue} ${styles.finFree}`}>₹0 FREE</span>
-                </div>
+
+                {details.selectedRooms && details.selectedRooms.length > 0 ? (
+                  details.selectedRooms.map((roomType: string, idx: number) => {
+                    let rentVal = Number(p.price);
+                    if (roomType.includes('Single')) rentVal = Math.round(rentVal * 1.5);
+                    else if (roomType.includes('Triple')) rentVal = Math.round(rentVal * 0.85);
+                    else if (roomType.includes('Four')) rentVal = Math.round(rentVal * 0.7);
+
+                    return (
+                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', borderBottom: idx < details.selectedRooms.length - 1 ? '1px solid #F1F5F9' : 'none', paddingBottom: '8px' }}>
+                        <span style={{ color: '#64748B', fontWeight: '500' }}>{roomType}</span>
+                        <span style={{ fontWeight: '700', color: '#1E293B' }}>₹{rentVal.toLocaleString('en-IN')}/mo</span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', borderBottom: '1px solid #F1F5F9', paddingBottom: '8px' }}>
+                      <span style={{ color: '#64748B', fontWeight: '500' }}>Single Room</span>
+                      <span style={{ fontWeight: '700', color: '#1E293B' }}>₹12,000/mo</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', borderBottom: '1px solid #F1F5F9', paddingBottom: '8px' }}>
+                      <span style={{ color: '#64748B', fontWeight: '500' }}>Double Sharing</span>
+                      <span style={{ fontWeight: '700', color: '#1E293B' }}>₹8,000/mo</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', paddingBottom: '8px' }}>
+                      <span style={{ color: '#64748B', fontWeight: '500' }}>Triple Sharing</span>
+                      <span style={{ fontWeight: '700', color: '#1E293B' }}>₹7,000/mo</span>
+                    </div>
+                  </>
+                )}
               </div>
-              
+            </div>
+
+            {/* Main Rent Card - Contact Actions */}
+            <div className={styles.widgetCard} style={{ padding: '16px' }}>
               <button className={styles.primaryBtn}>
                 <Phone size={16} /> Contact Owner
               </button>
-              
+
               <button className={styles.secondaryBtn}>
                 <Calendar size={16} /> Schedule a Visit
               </button>
-              
+
               <div className={styles.actionRow}>
                 <button className={styles.actionBtn}>
                   <Bookmark size={14} /> Save
@@ -661,13 +793,13 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                   <Share2 size={14} /> Share
                 </button>
               </div>
-              
+
               <div className={styles.ownerProfile}>
                 <div className={styles.ownerAvatar}>SM</div>
                 <div className={styles.ownerName}>Sunitha Menon</div>
               </div>
             </div>
-            
+
             {/* Zero Brokerage Card */}
             <div className={styles.zeroBrokerage}>
               <div className={styles.zbHeader}>
@@ -680,7 +812,7 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 <Star size={12} fill="currentColor" /> Explore Premium <ArrowRight size={12} />
               </button>
             </div>
-            
+
             {/* Recently Viewed */}
             <div className={styles.widgetCard}>
               <h4 className={styles.cardHeader}>RECENTLY VIEWED</h4>
@@ -723,9 +855,9 @@ export default async function PgDetailPage({ params }: { params: Promise<{ id: s
                 <Landmark size={14} /> Apply Now
               </button>
             </div>
-            
+
           </aside>
-          
+
         </div>
       </main>
     </div>

@@ -69,10 +69,10 @@ export async function POST(req: Request) {
         const data = await response.json();
         console.log("FAST2SMS VERIFY:", data);
         if (data.return === true) {
-           isOtpValid = true;
+          isOtpValid = true;
         } else {
-           // Do not throw error early! Fallback to database check because send-otp might have used a fallback provider!
-           console.log("FAST2SMS verification failed, falling back to database check");
+          // Do not throw error early! Fallback to database check because send-otp might have used a fallback provider!
+          console.log("FAST2SMS verification failed, falling back to database check");
         }
       } catch (e: any) {
         console.error("Fast2SMS Verify Error:", e);
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
     }
 
 
-    
+
     // Check against DB-stored OTP
     if (!isOtpValid && user && user.otp === otp) {
       isOtpValid = true;

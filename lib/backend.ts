@@ -2,6 +2,7 @@
 // This replaces direct Neon DB (pool) queries throughout the app
 
 import pool from './db';
+import { unstable_cache } from 'next/cache';
 
 export const BACKEND_URL = 'https://rentit-18-05.onrender.com';
 
@@ -57,7 +58,7 @@ async function safeQuery(sql: string, params?: any[], timeoutMs = 15000): Promis
   }
 }
 
-export async function fetchAllProperties() {
+export const fetchAllProperties = unstable_cache(async () => {
   const getFirstImage = (images: any): string | null => {
     if (!images) return null;
     if (Array.isArray(images)) return images[0] || null;
@@ -88,60 +89,76 @@ export async function fetchAllProperties() {
 
     // Other tables likely don't exist in the new schema, but keep for safety
     if (aptRows) {
-      all.push(...aptRows.map((r: any) => ({
-        ...r, id: r.id, _id: r.id, _key: `apt-${r.id}`,
-        title: `${r.bhkType || ''} ${r.apartmentType || 'Apartment'}`,
-        location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price, type: 'Residential', propertyType: 'Residential',
-        image_url: getFirstImage(r.images)
-      })));
+      all.push(...aptRows.map((r: any) => {
+        const { images, ...rest } = r;
+        return {
+          ...rest, id: r.id, _id: r.id, _key: `apt-${r.id}`,
+          title: `${r.bhkType || ''} ${r.apartmentType || 'Apartment'}`,
+          location: `${r.locality || ''}, ${r.city || ''}`,
+          price: r.price, type: 'Residential', propertyType: 'Residential',
+          image_url: getFirstImage(images)
+        };
+      }));
     }
     if (comRows) {
-      all.push(...comRows.map((r: any) => ({
-        ...r, id: r.id, _id: r.id, _key: `com-${r.id}`,
-        title: `${r.buildingType || r.propertyType || 'Commercial Space'}`,
-        location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price, type: 'Commercial', propertyType: 'Commercial',
-        image_url: getFirstImage(r.images)
-      })));
+      all.push(...comRows.map((r: any) => {
+        const { images, ...rest } = r;
+        return {
+          ...rest, id: r.id, _id: r.id, _key: `com-${r.id}`,
+          title: `${r.buildingType || r.propertyType || 'Commercial Space'}`,
+          location: `${r.locality || ''}, ${r.city || ''}`,
+          price: r.price, type: 'Commercial', propertyType: 'Commercial',
+          image_url: getFirstImage(images)
+        };
+      }));
     }
     if (flatRows) {
-      all.push(...flatRows.map((r: any) => ({
-        ...r, id: r.id, _id: r.id, _key: `flat-${r.id}`,
-        title: `${r.roomType || r.bhkType || ''} in ${r.apartmentName || 'Apartment'}`,
-        location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price, type: 'Flatmate', propertyType: 'Flatmate',
-        image_url: getFirstImage(r.images)
-      })));
+      all.push(...flatRows.map((r: any) => {
+        const { images, ...rest } = r;
+        return {
+          ...rest, id: r.id, _id: r.id, _key: `flat-${r.id}`,
+          title: `${r.roomType || r.bhkType || ''} in ${r.apartmentName || 'Apartment'}`,
+          location: `${r.locality || ''}, ${r.city || ''}`,
+          price: r.price, type: 'Flatmate', propertyType: 'Flatmate',
+          image_url: getFirstImage(images)
+        };
+      }));
     }
     if (pgRows) {
-      all.push(...pgRows.map((r: any) => ({
-        ...r,
-        id: r.id,
-        _id: r.id,
-        _key: `prop-${r.id}`,
-        title: `${r.propertyName || r.propertyType || 'Property'}`,
-        location: `${r.locality || ''}, ${r.city || ''}`,
-        price: r.price,
-        type: r.propertyType || 'PG / Hostel',
-        propertyType: r.propertyType || 'PG',
-        image_url: getFirstImage(r.images)
-      })));
+      all.push(...pgRows.map((r: any) => {
+        const { images, ...rest } = r;
+        return {
+          ...rest,
+          id: r.id,
+          _id: r.id,
+          _key: `prop-${r.id}`,
+          title: `${r.propertyName || r.propertyType || 'Property'}`,
+          location: `${r.locality || ''}, ${r.city || ''}`,
+          price: r.price,
+          type: r.propertyType || 'PG / Hostel',
+          propertyType: r.propertyType || 'PG',
+          image_url: getFirstImage(images)
+        };
+      }));
     }
     if (oldRows) {
-      all.push(...oldRows.map((r: any) => ({
-        ...r,
-        id: r.id,
-        _id: r.id,
-        _key: `old-${r.id}`,
-        title: r.title,
-        location: r.location_address || r.city,
-        price: r.price || r.rent,
-        type: r.type,
-        propertyType: r.type,
-        image_url: r.image_url || getFirstImage(r.images) || (r.details?.images && r.details.images[0]) || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800'
-      })));
+      all.push(...oldRows.map((r: any) => {
+        const { images, details, ...rest } = r;
+        return {
+          ...rest,
+          id: r.id,
+          _id: r.id,
+          _key: `old-${r.id}`,
+          title: r.title,
+          location: r.location_address || r.city,
+          price: r.price || r.rent,
+          type: r.type,
+          propertyType: r.type,
+          image_url: r.image_url || getFirstImage(images) || (details?.images && details.images[0]) || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800'
+        };
+      }));
     }
+
 
     all.sort((a, b) => {
       const dateA = new Date(a.created_at || 0).getTime();
@@ -159,42 +176,41 @@ export async function fetchAllProperties() {
       return true;
     });
 
-    return deduplicated;
+    // Ensure it's fully serializable for unstable_cache to avoid silent failures
+    return JSON.parse(JSON.stringify(deduplicated));
   } catch (error) {
     console.warn(`[fetchAllProperties] DB failed:`, (error as Error).message);
     return [];
   }
-}
+}, ['all-properties-v2'], { revalidate: 600, tags: ['properties'] });
 
 /**
  * Fetch a single property by ID — searches all 4 tables.
  */
-export async function fetchPropertyById(id: string) {
+export const fetchPropertyById = unstable_cache(async (id: string) => {
   try {
     const numericId = parseInt(id, 10);
     if (isNaN(numericId)) return null;
 
-    // Search all tables in parallel
-    const [apt, com, flat, pg, old] = await Promise.all([
-      safeQuery('SELECT * FROM "Apartment" WHERE id = $1', [numericId]),
-      safeQuery('SELECT * FROM "Commercial" WHERE id = $1', [numericId]),
-      safeQuery('SELECT * FROM "Flatmate" WHERE id = $1', [numericId]),
-      safeQuery('SELECT * FROM "Property" WHERE id = $1', [numericId]),
-      safeQuery('SELECT * FROM properties WHERE id = $1', [numericId]),
-    ]);
+    // Run sequentially to prevent connection pool exhaustion
+    const apt = await safeQuery('SELECT * FROM "Apartment" WHERE id = $1', [numericId]);
+    const com = await safeQuery('SELECT * FROM "Commercial" WHERE id = $1', [numericId]);
+    const flat = await safeQuery('SELECT * FROM "Flatmate" WHERE id = $1', [numericId]);
+    const pg = await safeQuery('SELECT * FROM "Property" WHERE id = $1', [numericId]);
+    const old = await safeQuery('SELECT * FROM properties WHERE id = $1', [numericId]);
 
-    if (apt && apt[0]) return { ...apt[0], id: apt[0].id, _id: apt[0].id, type: 'Residential', propertyType: 'Residential' };
-    if (com && com[0]) return { ...com[0], id: com[0].id, _id: com[0].id, type: 'Commercial', propertyType: 'Commercial' };
-    if (flat && flat[0]) return { ...flat[0], id: flat[0].id, _id: flat[0].id, type: 'Flatmate', propertyType: 'Flatmate' };
-    if (pg && pg[0]) return { ...pg[0], id: pg[0].id, _id: pg[0].id, type: 'PG / Hostel', propertyType: 'PG' };
-    if (old && old[0]) return { ...old[0], id: old[0].id, _id: old[0].id };
+    if (apt && apt[0]) return JSON.parse(JSON.stringify({ ...apt[0], id: apt[0].id, _id: apt[0].id, type: 'Residential', propertyType: 'Residential' }));
+    if (com && com[0]) return JSON.parse(JSON.stringify({ ...com[0], id: com[0].id, _id: com[0].id, type: 'Commercial', propertyType: 'Commercial' }));
+    if (flat && flat[0]) return JSON.parse(JSON.stringify({ ...flat[0], id: flat[0].id, _id: flat[0].id, type: 'Flatmate', propertyType: 'Flatmate' }));
+    if (pg && pg[0]) return JSON.parse(JSON.stringify({ ...pg[0], id: pg[0].id, _id: pg[0].id, type: 'PG / Hostel', propertyType: 'PG' }));
+    if (old && old[0]) return JSON.parse(JSON.stringify({ ...old[0], id: old[0].id, _id: old[0].id }));
 
     return null;
   } catch (error) {
     console.warn(`[fetchPropertyById] DB failed:`, (error as Error).message);
     return null;
   }
-}
+}, ['property-by-id-v2'], { revalidate: 600, tags: ['properties'] });
 
 /**
  * Update a single property by ID. Only updates the new Property table.
